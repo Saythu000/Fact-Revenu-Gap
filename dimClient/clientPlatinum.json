@@ -1,0 +1,76 @@
+{
+    "LayerGrouping": [
+        {
+            "LayerOrder": 1,
+            "LayerGrouping": "PlatinumLayerGeneric",
+            "SubGrouping": [
+				{
+                    "SubGroupEntity": "dimClient",
+                    "SubGroupingOrder": 1,
+                    "SubConfigPath": "",
+                    "Notebook": "./DimClientProcessing"
+                },
+				{
+                    "SubGroupEntity": "dimMember",
+                    "SubGroupingOrder": 2,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimMember.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "dimProvider",
+                    "SubGroupingOrder": 3,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimProvider.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "dimQualityMeasure",
+                    "SubGroupingOrder": 4,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimQualityMeasure.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "dimQualityEvent",
+                    "SubGroupingOrder": 5,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimQualityEvent.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "dimPracticeUnit",
+                    "SubGroupingOrder": 6,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimPracticeUnit.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "dimProviderOrg",
+                    "SubGroupingOrder": 7,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/dimProviderOrg.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "factMonthlyMemberCDIAlert",
+                    "SubGroupingOrder": 8,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/factMonthlyMemberCDIAlert.json",
+                    "Notebook": "./GenericSubGroupDupChkProcessing"
+                },
+                {
+                    "SubGroupEntity": "factMemberRevenueGap",
+                    "SubGroupingOrder": 9,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/factMemberRevenueGap.json",
+                    "Notebook": "./GenericSubGroupProcessing"
+                },
+                {
+                    "SubGroupEntity": "factGapsInCare",
+                    "SubGroupingOrder": 10,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/factGapsInCare.json",
+                    "Notebook": "./GenericSubGroupDupChkProcessing"
+                },
+                {
+                    "SubGroupEntity": "factGapsInCareRR",
+                    "SubGroupingOrder": 11,
+                    "SubConfigPath": "fileconfig/JSON/Platinum/factGapsInCareRR.json",
+                    "Notebook": "./GenericSubGroupDupChkProcessing"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "dimprovider",
+      "DestinationTable": "claimsprocessing.gold.gold_dimprovider",
+      "SourceTables": [
+        {
+          "Entity": "provider_hierarchy",
+          "SourceTable": "claimsprocessing.silver.silver_provider_hierarchy",
+          "SourceFormat": "delta"
+        }
+      ],
+      "SQLScriptPath": "Dataprocessing/dimprovider_processing.sql",
+      "MergeScriptPath": "DataUpdate/dimprovider_update.sql"
+    }
+  ]
+}

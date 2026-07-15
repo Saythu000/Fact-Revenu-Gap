@@ -1,0 +1,52 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "factmemberrevenuegap",
+      "DestinationTable": "#clientCode.gold.factmemberrevenuegap",
+      "SourceTables": [
+        {
+          "Entity": "memberRevenueGap",
+          "SourceTable": "#clientCode.gold.memberRevenueGap",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimMonth",
+          "SourceTable": "global.gold.dimMonth",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimClient",
+          "SourceTable": "#clientCode.gold.dimClient",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimMember",
+          "SourceTable": "#clientCode.gold.dimMember",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimHCC",
+          "SourceTable": "global.gold.dimHCC",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimProvider",
+          "SourceTable": "#clientCode.gold.dimProvider",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimAlertGroup",
+          "SourceTable": "global.gold.dimAlertGroup",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimDate",
+          "SourceTable": "global.gold.dimDate",
+          "SourceFormat": "delta"
+        }
+      ],
+      "SQLScriptPath": "Dataprocessing/factmemberrevenuegap_processing.sql",
+      "MergeScriptPath": "DataUpdate/factmemberrevenuegap_update.sql"
+    }
+  ]
+}

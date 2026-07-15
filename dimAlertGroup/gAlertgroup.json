@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "alertGroup",
+      "DestinationTable": "#clientCode/Gold/alertGroup",
+      "SourceTables": [
+        {
+          "Entity": "AlertGroup",
+          "SourceTable": "#clientCode/OperationalData/RAQ/AlertReference/dbo/AlertGroup",
+          "SourceFormat": "parquet"
+        }       
+      ],
+      "SQLScript": "SELECT \r\n       alertGroupID\r\n      ,alertGroupCode\r\n      ,alertGroupDescription\r\n      ,displayText\r\n      ,sortOrder\r\n      ,isActive\r\n      ,hash(concat(\r\n          IfNull(alertGroupID,\"\") \r\n      ,\"|\",IfNull(alertGroupCode,\"\") \r\n      ,\"|\",IfNull(alertGroupDescription,\"\")\r\n      ,\"|\",IfNull(displayText,\"\")\r\n      ,\"|\",IfNull(sortOrder,\"\")\r\n      ,\"|\",IfNull(isActive,false)\r\n      )) AS hashKey \r\nFROM( \r\nSELECT \r\n       AlertGroupID AS alertGroupID\r\n      ,AlertGroupCode AS alertGroupCode\r\n      ,AlertGroupDescription AS alertGroupDescription\r\n      ,DisplayText AS displayText\r\n      ,SortOrder AS sortOrder\r\n      ,Active AS isActive\r\n  FROM AlertGroup\r\n  ) a",
+	  "MergeScript": "MERGE INTO DestinationTable t \r\nUSING (SELECT * FROM tempSQLScript) s \r\n    ON IfNull(s.alertGroupID,\"\") = IfNull(t.alertGroupID,\"\") \r\nWHEN MATCHED AND t.hashKey <> s.hashKey \r\nTHEN UPDATE SET \r\n    alertGroupID = s.alertGroupID\r\n    ,alertGroupCode = s.alertGroupCode\r\n    ,alertGroupDescription = s.alertGroupDescription\r\n    ,displayText = s.displayText\r\n    ,sortOrder = s.sortOrder\r\n    ,isActive = s.isActive\r\n    ,hashKey = s.hashKey \r\nWHEN NOT MATCHED THEN  \r\nINSERT(\r\n    alertGroupID\r\n    ,alertGroupCode\r\n    ,alertGroupDescription\r\n    ,displayText\r\n    ,sortOrder\r\n    ,isActive\r\n    ,hashKey\r\n) \r\nVALUES ( \r\n    s.alertGroupID\r\n    ,s.alertGroupCode\r\n    ,s.alertGroupDescription\r\n    ,s.displayText\r\n    ,s.sortOrder\r\n    ,s.isActive\r\n    ,s.hashKey\r\n)"
+	  }
+  ]
+}

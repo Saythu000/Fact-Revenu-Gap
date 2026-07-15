@@ -1,0 +1,22 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "hcc",
+      "DestinationTable": "#clientCode/Gold/hcc",
+      "SourceTables": [
+        {
+          "Entity": "HCCDataSet",
+          "SourceTable": "#clientCode/OperationalData/RAQ/TepReference/dbo/HCCDataset",
+          "SourceFormat": "parquet"
+        },
+        {
+          "Entity": "HCCEffectiveYear",
+          "SourceTable": "#clientCode/OperationalData/RAQ/TepReference/dbo/HCCEffectiveYear",
+          "SourceFormat": "parquet"
+        }
+      ],
+      "SQLScript": "\r\nWITH THIS AS(\r\nSELECT \r\n\t ds.HCCNumber\r\n\t,ds.HCCDescription\r\n\t,ds.HCCVersion\r\n\t,ds.HCCType\r\n\t,ds.IsChronic \r\n\t,ey.EffectiveYear\r\n\t,ey.EffectiveDateStart\r\n\t,ey.EffectiveDateEnd\r\n\t,hash(concat(\r\n\t\t\tIfNull(ds.HCCNumber, \"|\"), \r\n\t\t\"|\",IfNull(ds.HCCDescription, \"|\"), \r\n\t\t\"|\",IfNull(ds.HCCVersion, \"|\"), \r\n\t\t\"|\",IfNull(ds.HCCType, \"|\") , \r\n\t\t\"|\",IfNull(ds.IsChronic, false) ,  \r\n\t\t\"|\",IfNull(ey.EffectiveYear, \"|\") , \r\n\t\t\"|\",IfNull(ey.EffectiveDateStart, \"|\") , \r\n\t\t\"|\",IfNull(ey.EffectiveDateEnd, \"|\")\r\n\t\t)\r\n\t) AS hashKey  \r\n\t,ROW_NUMBER() OVER(PARTITION BY IfNull(ds.HCCNumber, \"|\"), IfNull(ds.HCCVersion, \"|\"), IfNull(ds.HCCType, \"|\"), IfNull(ey.EffectiveYear, \"|\") ORDER BY IfNull(ds.CreationDatetime, \"9999-12-31\") DESC) AS RowNumber\r\n\tFROM HCCDataSet ds\r\n\t\tLEFT JOIN  HCCEffectiveYear ey\r\n\t\t\tON ds.HCCEffectiveYearID = ey.HCCEffectiveYearID\r\n)\r\nSELECT \r\n\t HCCNumber\r\n\t,HCCDescription\r\n\t,HCCVersion\r\n\t,HCCType\r\n\t,IsChronic \r\n\t,EffectiveYear\r\n\t,EffectiveDateStart\r\n\t,EffectiveDateEnd\r\n\t,hashKey\r\nFROM THIS\r\nWHERE\r\nRowNumber = 1\r\n",
+      "MergeScript": "\r\nMERGE INTO DestinationTable t \r\nUSING (SELECT * FROM tempSQLScript) s ON IfNull(s.HCCNumber,\"|\") = IfNull(t.HCCNumber,\"|\") AND IfNull(s.EffectiveYear,\"|\") = IfNull(t.EffectiveYear,\"|\") AND IfNull(s.HCCVersion,\"|\") = IfNull(t.HCCVersion,\"|\") AND IfNull(s.HCCType,\"|\") = IfNull(t.HCCType,\"|\") \r\nWHEN MATCHED AND t.hashKey <> s.hashKey \r\nTHEN  \r\nUPDATE SET \r\n\tHCCNumber = s.HCCNumber,\r\n\tHCCDescription = s.HCCDescription,\r\n\tHCCVersion = s.HCCVersion,\r\n\tHCCType = s.HCCType,\r\n\tIsChronic = s.IsChronic,\r\n\tEffectiveYear = s.EffectiveYear,\r\n\tEffectiveDateStart = s.EffectiveDateStart,\r\n\tEffectiveDateEnd = s.EffectiveDateEnd,\r\n\thashKey = s.hashKey \r\nWHEN NOT MATCHED THEN INSERT (\r\n   HCCNumber\r\n  ,HCCDescription\r\n  ,HCCVersion\r\n  ,HCCType\r\n  ,IsChronic \r\n  ,EffectiveYear\r\n  ,EffectiveDateStart\r\n  ,EffectiveDateEnd\r\n  ,hashKey\r\n)\r\nVALUES (\r\n\t s.HCCNumber\r\n\t,s.HCCDescription\r\n\t,s.HCCVersion\r\n\t,s.HCCType\r\n\t,s.IsChronic \r\n\t,s.EffectiveYear\r\n\t,s.EffectiveDateStart\r\n\t,s.EffectiveDateEnd\r\n\t,s.hashKey\r\n)\r\n"
+	  }
+  ]
+}

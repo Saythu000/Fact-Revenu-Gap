@@ -1,0 +1,4 @@
+AlertGroupID,AlertGroupCode,AlertGroupDescription,DisplayText,SortOrder,Active
+1,HIST,Historical Gap,Historical Condition,1,true
+2,SUSP,Suspected Gap,Suspected Condition,2,true
+3,DX,Diagnosed Gap,Diagnosed Condition,3,true
