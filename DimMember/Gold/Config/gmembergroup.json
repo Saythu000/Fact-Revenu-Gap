@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "dimMemberGroup",
+      "DestinationTable": "claimsprocessing.gold.gold_ma_membergroup",
+      "SourceTables": [
+        {
+          "Entity": "member_group",
+          "SourceTable": "claimsprocessing.silver.silver_member_group",
+          "SourceFormat": "delta"
+        }
+      ],
+      "SQLScript": "SELECT hash(concat(IfNull(mg.SubscriberID, '|'), '|', IfNull(mg.BeneficiaryID, '|'), '|', IfNull(mg.GroupNumber, '|'))) AS memberGroupKey, mg.SubscriberID, mg.BeneficiaryID, mg.CMSContractNumber, mg.GroupNumber, mg.GroupSuffix, mg.StartDate, mg.EndDate, mg.SourceFileID, mg.LoadDateTime, mg.hashKey FROM member_group mg",
+      "MergeScript": "MERGE INTO claimsprocessing.gold.gold_ma_membergroup t USING (SELECT * FROM tempSQLScript) s ON IfNull(s.SubscriberID,'|') = IfNull(t.SubscriberID,'|') AND IfNull(s.BeneficiaryID,'|') = IfNull(t.BeneficiaryID,'|') AND IfNull(s.GroupNumber,'|') = IfNull(t.GroupNumber,'|') WHEN MATCHED AND t.hashKey <> s.hashKey THEN UPDATE SET SubscriberID = s.SubscriberID, BeneficiaryID = s.BeneficiaryID, CMSContractNumber = s.CMSContractNumber, GroupNumber = s.GroupNumber, GroupSuffix = s.GroupSuffix, StartDate = s.StartDate, EndDate = s.EndDate, SourceFileID = s.SourceFileID, LoadDateTime = s.LoadDateTime, hashKey = s.hashKey, memberGroupKey = s.memberGroupKey WHEN NOT MATCHED THEN INSERT (memberGroupKey, SubscriberID, BeneficiaryID, CMSContractNumber, GroupNumber, GroupSuffix, StartDate, EndDate, SourceFileID, LoadDateTime, hashKey) VALUES (s.memberGroupKey, s.SubscriberID, s.BeneficiaryID, s.CMSContractNumber, s.GroupNumber, s.GroupSuffix, s.StartDate, s.EndDate, s.SourceFileID, s.LoadDateTime, s.hashKey)"
+    }
+  ]
+}

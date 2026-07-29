@@ -6,6 +6,7 @@ THEN UPDATE SET
    pecYearMonthKey             = s.pecYearMonthKey
   ,clientKey                  = s.clientKey
   ,memberKey                  = s.memberKey
+  ,memberGroupKey             = s.memberGroupKey
   ,planID                     = s.planID
   ,hccKey                     = s.hccKey
   ,snapshotDateKey            = s.snapshotDateKey
@@ -23,6 +24,7 @@ THEN INSERT
    pecYearMonthKey
   ,clientKey
   ,memberKey
+  ,memberGroupKey
   ,planID
   ,hccKey
   ,snapshotDateKey
@@ -41,6 +43,7 @@ VALUES
    s.pecYearMonthKey
   ,s.clientKey
   ,s.memberKey
+  ,s.memberGroupKey
   ,s.planID
   ,s.hccKey
   ,s.snapshotDateKey

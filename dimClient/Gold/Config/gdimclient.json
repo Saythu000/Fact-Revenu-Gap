@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "dimClient",
+      "DestinationTable": "claimsprocessing.gold.gold_dimclient",
+      "SourceTables": [
+        {
+          "Entity": "client_raw",
+          "SourceTable": "#clientCode/source/Client/client_metadata",
+          "SourceFormat": "csv"
+        }
+      ],
+      "SQLScriptPath": "../Dataprocessing/dimclient_processing.sql",
+      "MergeScriptPath": "../DataUpdate/dimclient_update.sql"
+    }
+  ]
+}

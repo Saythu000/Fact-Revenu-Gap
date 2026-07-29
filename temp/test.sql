@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS new.gold.provider_group_reference;

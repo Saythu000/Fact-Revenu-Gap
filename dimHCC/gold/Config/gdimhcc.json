@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "dimHCC",
+      "DestinationTable": "claimsprocessing.gold.gold_dimhcc",
+      "SourceTables": [
+        {
+          "Entity": "hcc",
+          "SourceTable": "claimsprocessing.silver.silver_hcc",
+          "SourceFormat": "delta"
+        }
+      ],
+      "SQLScript": "SELECT h.HCCNumber, h.HCCDescription, h.HCCVersion, h.HCCType, h.IsChronic, h.EffectiveYear, h.EffectiveDateStart, h.EffectiveDateEnd, h.hashKey, hash(concat(IfNull(h.HCCNumber, '|'), '|', IfNull(h.HCCVersion, '|'), '|', IfNull(h.HCCType, '|'), '|', IfNull(h.EffectiveYear, '|'))) AS hccKey FROM hcc h",
+      "MergeScript": "MERGE INTO claimsprocessing.gold.gold_dimhcc t USING (SELECT * FROM tempSQLScript) s ON IfNull(s.HCCNumber,'|') = IfNull(t.HCCNumber,'|') AND IfNull(s.EffectiveYear,'|') = IfNull(t.EffectiveYear,'|') AND IfNull(s.HCCVersion,'|') = IfNull(t.HCCVersion,'|') AND IfNull(s.HCCType,'|') = IfNull(t.HCCType,'|') WHEN MATCHED AND t.hashKey <> s.hashKey THEN UPDATE SET HCCNumber = s.HCCNumber, HCCDescription = s.HCCDescription, HCCVersion = s.HCCVersion, HCCType = s.HCCType, IsChronic = s.IsChronic, EffectiveYear = s.EffectiveYear, EffectiveDateStart = s.EffectiveDateStart, EffectiveDateEnd = s.EffectiveDateEnd, hashKey = s.hashKey, hccKey = s.hccKey WHEN NOT MATCHED THEN INSERT (HCCNumber, HCCDescription, HCCVersion, HCCType, IsChronic, EffectiveYear, EffectiveDateStart, EffectiveDateEnd, hashKey, hccKey) VALUES (s.HCCNumber, s.HCCDescription, s.HCCVersion, s.HCCType, s.IsChronic, s.EffectiveYear, s.EffectiveDateStart, s.EffectiveDateEnd, s.hashKey, s.hccKey)"
+    }
+  ]
+}

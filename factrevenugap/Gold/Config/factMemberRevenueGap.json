@@ -2,51 +2,56 @@
   "SubLayerProcessing": [
     {
       "SubGroupEntity": "factmemberrevenuegap",
-      "DestinationTable": "#clientCode.gold.factmemberrevenuegap",
+      "DestinationTable": "claimsprocessing.gold.factmemberrevenuegap",
       "SourceTables": [
         {
           "Entity": "memberRevenueGap",
-          "SourceTable": "#clientCode.gold.memberRevenueGap",
+          "SourceTable": "claimsprocessing.silver.silver_member_revenue_gap",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimMonth",
-          "SourceTable": "global.gold.dimMonth",
+          "SourceTable": "claimsprocessing.gold.gold_dimmonth",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimClient",
-          "SourceTable": "#clientCode.gold.dimClient",
+          "SourceTable": "claimsprocessing.gold.gold_dimclient",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimMember",
-          "SourceTable": "#clientCode.gold.dimMember",
+          "SourceTable": "claimsprocessing.gold.gold_dimmember",
+          "SourceFormat": "delta"
+        },
+        {
+          "Entity": "dimMemberGroup",
+          "SourceTable": "claimsprocessing.gold.gold_ma_membergroup",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimHCC",
-          "SourceTable": "global.gold.dimHCC",
+          "SourceTable": "claimsprocessing.gold.gold_dimhcc",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimProvider",
-          "SourceTable": "#clientCode.gold.dimProvider",
+          "SourceTable": "claimsprocessing.gold.gold_dimprovider",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimAlertGroup",
-          "SourceTable": "global.gold.dimAlertGroup",
+          "SourceTable": "claimsprocessing.gold.gold_dimalertgroup",
           "SourceFormat": "delta"
         },
         {
           "Entity": "dimDate",
-          "SourceTable": "global.gold.dimDate",
+          "SourceTable": "claimsprocessing.gold.gold_dimdate",
           "SourceFormat": "delta"
         }
       ],
-      "SQLScriptPath": "Dataprocessing/factmemberrevenuegap_processing.sql",
-      "MergeScriptPath": "DataUpdate/factmemberrevenuegap_update.sql"
+      "SQLScriptPath": "../Dataprocessing/factmemberrevenuegap_processing.sql",
+      "MergeScriptPath": "../DataUpdate/factmemberrevenuegap_update.sql"
     }
   ]
 }

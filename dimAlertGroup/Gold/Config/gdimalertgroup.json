@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "dimAlertGroup",
+      "DestinationTable": "claimsprocessing.gold.gold_dimalertgroup",
+      "SourceTables": [
+        {
+          "Entity": "alertGroup",
+          "SourceTable": "claimsprocessing.silver.silver_alertgroup",
+          "SourceFormat": "delta"
+        }
+      ],
+      "SQLScript": "SELECT alertGroupID AS alertGroupKey, alertGroupCode, alertGroupDescription, displayText, sortOrder, isActive FROM alertGroup",
+      "MergeScript": "MERGE INTO claimsprocessing.gold.gold_dimalertgroup t USING (SELECT * FROM tempSQLScript) s ON s.alertGroupKey = t.alertGroupKey WHEN MATCHED THEN UPDATE SET alertGroupCode = s.alertGroupCode, alertGroupDescription = s.alertGroupDescription, displayText = s.displayText, sortOrder = s.sortOrder, isActive = s.isActive WHEN NOT MATCHED THEN INSERT (alertGroupKey, alertGroupCode, alertGroupDescription, displayText, sortOrder, isActive) VALUES (s.alertGroupKey, s.alertGroupCode, s.alertGroupDescription, s.displayText, s.sortOrder, s.isActive)"
+    }
+  ]
+}

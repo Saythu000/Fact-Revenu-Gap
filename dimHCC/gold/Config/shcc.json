@@ -1,0 +1,22 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "hcc",
+      "DestinationTable": "claimsprocessing.silver.silver_hcc",
+      "SourceTables": [
+        {
+          "Entity": "HCCDataSet",
+          "SourceTable": "#clientCode/OperationalData/RAQ/TepReference/dbo/HCCDataset",
+          "SourceFormat": "parquet"
+        },
+        {
+          "Entity": "HCCEffectiveYear",
+          "SourceTable": "#clientCode/OperationalData/RAQ/TepReference/dbo/HCCEffectiveYear",
+          "SourceFormat": "parquet"
+        }
+      ],
+      "SQLScript": "WITH THIS AS (SELECT ds.HCCNumber, ds.HCCDescription, ds.HCCVersion, ds.HCCType, ds.IsChronic, ey.EffectiveYear, ey.EffectiveDateStart, ey.EffectiveDateEnd, hash(concat(IfNull(ds.HCCNumber, '|'), '|', IfNull(ds.HCCDescription, '|'), '|', IfNull(ds.HCCVersion, '|'), '|', IfNull(ds.HCCType, '|'), '|', IfNull(ds.IsChronic, false), '|', IfNull(ey.EffectiveYear, '|'), '|', IfNull(ey.EffectiveDateStart, '|'), '|', IfNull(ey.EffectiveDateEnd, '|'))) AS hashKey, ROW_NUMBER() OVER(PARTITION BY IfNull(ds.HCCNumber, '|'), IfNull(ds.HCCVersion, '|'), IfNull(ds.HCCType, '|'), IfNull(ey.EffectiveYear, '|') ORDER BY IfNull(ds.CreationDatetime, '9999-12-31') DESC) AS RowNumber FROM HCCDataSet ds LEFT JOIN HCCEffectiveYear ey ON ds.HCCEffectiveYearID = ey.HCCEffectiveYearID) SELECT HCCNumber, HCCDescription, HCCVersion, HCCType, IsChronic, EffectiveYear, EffectiveDateStart, EffectiveDateEnd, hashKey FROM THIS WHERE RowNumber = 1",
+      "MergeScript": "MERGE INTO claimsprocessing.silver.silver_hcc t USING (SELECT * FROM tempSQLScript) s ON IfNull(s.HCCNumber,'|') = IfNull(t.HCCNumber,'|') AND IfNull(s.EffectiveYear,'|') = IfNull(t.EffectiveYear,'|') AND IfNull(s.HCCVersion,'|') = IfNull(t.HCCVersion,'|') AND IfNull(s.HCCType,'|') = IfNull(t.HCCType,'|') WHEN MATCHED AND t.hashKey <> s.hashKey THEN UPDATE SET HCCNumber = s.HCCNumber, HCCDescription = s.HCCDescription, HCCVersion = s.HCCVersion, HCCType = s.HCCType, IsChronic = s.IsChronic, EffectiveYear = s.EffectiveYear, EffectiveDateStart = s.EffectiveDateStart, EffectiveDateEnd = s.EffectiveDateEnd, hashKey = s.hashKey WHEN NOT MATCHED THEN INSERT (HCCNumber, HCCDescription, HCCVersion, HCCType, IsChronic, EffectiveYear, EffectiveDateStart, EffectiveDateEnd, hashKey) VALUES (s.HCCNumber, s.HCCDescription, s.HCCVersion, s.HCCType, s.IsChronic, s.EffectiveYear, s.EffectiveDateStart, s.EffectiveDateEnd, s.hashKey)"
+    }
+  ]
+}

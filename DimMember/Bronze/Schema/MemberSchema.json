@@ -1,0 +1,741 @@
+{
+    "columnNames": [
+        {
+            "FieldName": "TEMPLATE",
+            "OrdinalPosition": -1,
+            "DataType": "TEMPLATE",
+            "Format": "TEMPLATE",
+            "Validators": [
+                {
+                    "Name": "TEMPLATE",
+                    "Value": "TEMPLATE",
+                    "InputValue": [
+                        "TEMPLATE"
+                    ],
+                    "ConditionCol": "TEMPLATE",
+                    "ConditionVal": [
+                        "TEMPLATE"
+                    ]
+                }
+            ]
+        },
+        {
+            "FieldName": "UNIQUEPERSONKEY",
+            "OrdinalPosition": 0,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "BENEFICIARYID",
+            "OrdinalPosition": 1,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAIDID",
+            "OrdinalPosition": 2,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "LASTNAME",
+            "OrdinalPosition": 3,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "FIRSTNAME",
+            "OrdinalPosition": 4,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MIDDLEINITIAL",
+            "OrdinalPosition": 5,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "DATEOFBIRTH",
+            "OrdinalPosition": 6,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                },
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "GENDER",
+            "OrdinalPosition": 7,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "IsInAllowedValues",
+                    "InputValue": [
+                        "F",
+                        "M",
+                        "U"
+                    ]
+                }
+            ]
+        },
+        {
+            "FieldName": "PERMANENTADDRESSLINE1",
+            "OrdinalPosition": 8,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "PERMANENTADDRESSLINE2",
+            "OrdinalPosition": 9,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PERMANENTCITY",
+            "OrdinalPosition": 10,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "PERMANENTSTATE",
+            "OrdinalPosition": 11,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "PERMANENTZIPCODE",
+            "OrdinalPosition": 12,
+            "DataType": "string",
+            "Validators": [
+                {
+                    "Name": "isRequired"
+                }
+            ]
+        },
+        {
+            "FieldName": "PERMANENTCOUNTY",
+            "OrdinalPosition": 13,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "TELEPHONENUMBER",
+            "OrdinalPosition": 14,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "EMAIL",
+            "OrdinalPosition": 15,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "FAX",
+            "OrdinalPosition": 16,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "MAILINGADDRESSLINE1",
+            "OrdinalPosition": 17,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGADDRESSLINE2",
+            "OrdinalPosition": 18,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGCITY",
+            "OrdinalPosition": 19,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGSTATE",
+            "OrdinalPosition": 20,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGZIPCODE",
+            "OrdinalPosition": 21,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGCOUNTY",
+            "OrdinalPosition": 22,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "CARETAKERFIRSTNAME",
+            "OrdinalPosition": 23,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "CARETAKERLASTNAME",
+            "OrdinalPosition": 24,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "CARETAKERMIDDLEINITIAL",
+            "OrdinalPosition": 25,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "RACE",
+            "OrdinalPosition": 26,
+            "DataType": "integer",
+            "Validators": [
+                {
+                    "Name": "IsInAllowedValues",
+                    "InputValue": [
+                        "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", 
+                        "1", "2", "3", "4", "5", "6", "7", "8", "9"
+                    ]
+                }
+            ]
+        },
+        {
+            "FieldName": "RACEDATASOURCE",
+            "OrdinalPosition": 27,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "ETHNICITY",
+            "OrdinalPosition": 28,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "ETHNICITYDATASOURCE",
+            "OrdinalPosition": 29,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "SPOKENLANGUAGE",
+            "OrdinalPosition": 30,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "SPOKENLANGUAGESOURCE",
+            "OrdinalPosition": 31,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "WRITTENLANGUAGE",
+            "OrdinalPosition": 32,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "WRITTENLANGUAGESOURCE",
+            "OrdinalPosition": 33,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "OTHERLANGUAGE",
+            "OrdinalPosition": 34,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "OTHERLANGUAGESOURCE",
+            "OrdinalPosition": 35,
+            "DataType": "integer"
+        },
+        {
+            "FieldName": "USCITIZEN",
+            "OrdinalPosition": 36,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "DECEASEDDATE",
+            "OrdinalPosition": 37,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MASKEDMEMBERID",
+            "OrdinalPosition": 38,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ENROLLEEEDUCATION",
+            "OrdinalPosition": 39,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ENROLLEEEMPLOYMENT",
+            "OrdinalPosition": 40,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY1",
+            "OrdinalPosition": 41,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY2",
+            "OrdinalPosition": 42,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY3",
+            "OrdinalPosition": 43,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY4",
+            "OrdinalPosition": 44,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY5",
+            "OrdinalPosition": 45,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY6",
+            "OrdinalPosition": 46,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY7",
+            "OrdinalPosition": 47,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY8",
+            "OrdinalPosition": 48,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY9",
+            "OrdinalPosition": 49,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEKEY10",
+            "OrdinalPosition": 50,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PLANMEMBERID",
+            "OrdinalPosition": 51,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "SUBSCRIBERID",
+            "OrdinalPosition": 52,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "STARTDATE",
+            "OrdinalPosition": 53,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "ENDDATE",
+            "OrdinalPosition": 54,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "SUBSCRIBERFLAG",
+            "OrdinalPosition": 55,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "FULLNAME",
+            "OrdinalPosition": 56,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "TITLE",
+            "OrdinalPosition": 57,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "SUFFIX",
+            "OrdinalPosition": 58,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "GATEWAYMEMBERSTATUS",
+            "OrdinalPosition": 59,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEMEMBERID",
+            "OrdinalPosition": 60,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ENROLLEEUNIQUEID",
+            "OrdinalPosition": 61,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MEMBERSSN",
+            "OrdinalPosition": 62,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PERMANENTADDRESSLINE3",
+            "OrdinalPosition": 63,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PERMANENTSCC",
+            "OrdinalPosition": 64,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "MAILINGADDRESSLINE3",
+            "OrdinalPosition": 65,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGADDRESSLINE1",
+            "OrdinalPosition": 66,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGADDRESSLINE2",
+            "OrdinalPosition": 67,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGADDRESSLINE3",
+            "OrdinalPosition": 68,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGCITY",
+            "OrdinalPosition": 69,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGSTATE",
+            "OrdinalPosition": 70,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "BILLINGZIPCODE",
+            "OrdinalPosition": 71,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PHONENUMBER",
+            "OrdinalPosition": 72,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATEPHONENUMBER",
+            "OrdinalPosition": 73,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "EMERGENCYCONTACTNAME",
+            "OrdinalPosition": 74,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "EMERGENCYCONTACTRELATIONSHIP",
+            "OrdinalPosition": 75,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "EMERGENCYCONTACTPHONENUMBER",
+            "OrdinalPosition": 76,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "IDCARDTRIGGERFLAG",
+            "OrdinalPosition": 77,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ENDANGEREDMEMBERFLAG",
+            "OrdinalPosition": 78,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "OOAPROCESS",
+            "OrdinalPosition": 79,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "OOASOURCE",
+            "OrdinalPosition": 80,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "DATEOFMOVE",
+            "OrdinalPosition": 81,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MOVEDEADLINE",
+            "OrdinalPosition": 82,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTAEFFDATE",
+            "OrdinalPosition": 83,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTAENDDATE",
+            "OrdinalPosition": 84,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTBEFFDATE",
+            "OrdinalPosition": 85,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTBENDDATE",
+            "OrdinalPosition": 86,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTDEFFDATE",
+            "OrdinalPosition": 87,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "MEDICAREPARTDENDDATE",
+            "OrdinalPosition": 88,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "LANGUAGECODE",
+            "OrdinalPosition": 89,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATIVEFORMATLARGEPRINT",
+            "OrdinalPosition": 90,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATIVEFORMATBRAILLE",
+            "OrdinalPosition": 91,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "ALTERNATIVEFORMATAUDIOTAPE",
+            "OrdinalPosition": 92,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "INLEPPROCESSSTATUS",
+            "OrdinalPosition": 93,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POANAME",
+            "OrdinalPosition": 94,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POAADDRESS1",
+            "OrdinalPosition": 95,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POAADDRESS2",
+            "OrdinalPosition": 96,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POAADDRESS3",
+            "OrdinalPosition": 97,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POACITY",
+            "OrdinalPosition": 98,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POACOUNTY",
+            "OrdinalPosition": 99,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POASTATE",
+            "OrdinalPosition": 100,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POAZIPCODE",
+            "OrdinalPosition": 101,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POAPHONENUMBER",
+            "OrdinalPosition": 102,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "POARELATIONSHIP",
+            "OrdinalPosition": 103,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "RACECODE",
+            "OrdinalPosition": 104,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "RACEEDATASOURCE",
+            "OrdinalPosition": 105,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "IKAUNIQUEID",
+            "OrdinalPosition": 106,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "FAMILYLINKINDICATOR",
+            "OrdinalPosition": 107,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "INPREMIUMDELINQUENCYPROCESS",
+            "OrdinalPosition": 108,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "THIRDPARTYLIABILITYEFFDATE",
+            "OrdinalPosition": 109,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "THIRDPARTYLIABILITYTRNDATE",
+            "OrdinalPosition": 110,
+            "DataType": "date",
+            "Validators": [
+                {
+                    "Name": "isDate",
+                    "Value": "MM/dd/yyyy"
+                }
+            ]
+        },
+        {
+            "FieldName": "OWEDPREMIUM",
+            "OrdinalPosition": 111,
+            "DataType": "string"
+        },
+        {
+            "FieldName": "PRODUCTID",
+            "OrdinalPosition": 112,
+            "DataType": "string"
+        }
+    ],
+    "Rules": [
+        {
+            "Name": "VerifyTotalCount",
+            "Data_file_query": "select count(1) + 1 from data_file",
+            "control_file_query": "select _c7 from control_file"
+        },
+        {
+            "Name": "VerifyTotalDataCount",
+            "Data_file_query": "select count(1) from data_file",
+            "control_file_query": "select _c8 from control_file"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "SubLayerProcessing": [
+    {
+      "SubGroupEntity": "alertGroup",
+      "DestinationTable": "claimsprocessing.silver.silver_alertgroup",
+      "SourceTables": [
+        {
+          "Entity": "AlertGroup",
+          "SourceTable": "#clientCode/OperationalData/RAQ/AlertReference/dbo/AlertGroup",
+          "SourceFormat": "parquet"
+        }
+      ],
+      "SQLScript": "SELECT alertGroupID, alertGroupCode, alertGroupDescription, displayText, sortOrder, isActive, hash(concat(IfNull(alertGroupID, ''), '|', IfNull(alertGroupCode, ''), '|', IfNull(alertGroupDescription, ''), '|', IfNull(displayText, ''), '|', IfNull(sortOrder, ''), '|', IfNull(isActive, false))) AS hashKey FROM (SELECT AlertGroupID AS alertGroupID, AlertGroupCode AS alertGroupCode, AlertGroupDescription AS alertGroupDescription, DisplayText AS displayText, SortOrder AS sortOrder, Active AS isActive FROM AlertGroup) a",
+      "MergeScript": "MERGE INTO claimsprocessing.silver.silver_alertgroup t USING (SELECT * FROM tempSQLScript) s ON IfNull(s.alertGroupID, '') = IfNull(t.alertGroupID, '') WHEN MATCHED AND t.hashKey <> s.hashKey THEN UPDATE SET alertGroupID = s.alertGroupID, alertGroupCode = s.alertGroupCode, alertGroupDescription = s.alertGroupDescription, displayText = s.displayText, sortOrder = s.sortOrder, isActive = s.isActive, hashKey = s.hashKey WHEN NOT MATCHED THEN INSERT (alertGroupID, alertGroupCode, alertGroupDescription, displayText, sortOrder, isActive, hashKey) VALUES (s.alertGroupID, s.alertGroupCode, s.alertGroupDescription, s.displayText, s.sortOrder, s.isActive, s.hashKey)"
+    }
+  ]
+}

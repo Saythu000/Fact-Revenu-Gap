@@ -1,0 +1,594 @@
+{
+  "Fields": [
+    {
+      "FieldName": "ClientID",
+      "DataType": "StringType",
+      "Ordinal": 1
+    },
+    {
+      "FieldName": "FileID",
+      "DataType": "IntegerType",
+      "Ordinal": 2
+    },
+    {
+      "FieldName": "LoadDateTime",
+      "DataType": "DateType",
+      "Ordinal": 3
+    },
+    {
+      "FieldName": "FileLayoutID",
+      "DataType": "IntegerType",
+      "Ordinal": 4
+    },
+    {
+      "FieldName": "FileLayoutDescription",
+      "DataType": "StringType",
+      "Ordinal": 5
+    },
+    {
+      "FieldName": "TransactionType",
+      "DataType": "StringType",
+      "Ordinal": 6
+    },
+    {
+      "FieldName": "UniquePersonKey",
+      "DataType": "StringType",
+      "Ordinal": 7
+    },
+    {
+      "FieldName": "PlanMemberID",
+      "DataType": "StringType",
+      "Ordinal": 8
+    },
+    {
+      "FieldName": "SubscriberID",
+      "DataType": "StringType",
+      "Ordinal": 9
+    },
+    {
+      "FieldName": "StartDate",
+      "DataType": "DateType",
+      "Ordinal": 10
+    },
+    {
+      "FieldName": "EndDate",
+      "DataType": "DateType",
+      "Ordinal": 11
+    },
+    {
+      "FieldName": "SubscriberFlag",
+      "DataType": "StringType",
+      "Ordinal": 12
+    },
+    {
+      "FieldName": "BeneficiaryID",
+      "DataType": "StringType",
+      "Ordinal": 13
+    },
+    {
+      "FieldName": "FullName",
+      "DataType": "StringType",
+      "Ordinal": 14
+    },
+    {
+      "FieldName": "LastName",
+      "DataType": "StringType",
+      "Ordinal": 15
+    },
+    {
+      "FieldName": "FirstName",
+      "DataType": "StringType",
+      "Ordinal": 16
+    },
+    {
+      "FieldName": "MiddleInitial",
+      "DataType": "StringType",
+      "Ordinal": 17
+    },
+    {
+      "FieldName": "Title",
+      "DataType": "StringType",
+      "Ordinal": 18
+    },
+    {
+      "FieldName": "Suffix",
+      "DataType": "StringType",
+      "Ordinal": 19
+    },
+    {
+      "FieldName": "GateWayMemberStatus",
+      "DataType": "StringType",
+      "Ordinal": 20
+    },
+    {
+      "FieldName": "AlternateMemberID",
+      "DataType": "StringType",
+      "Ordinal": 21
+    },
+    {
+      "FieldName": "EnrolleeUniqueID",
+      "DataType": "StringType",
+      "Ordinal": 22
+    },
+    {
+      "FieldName": "DateofBirth",
+      "DataType": "DateType",
+      "Ordinal": 23
+    },
+    {
+      "FieldName": "DeceasedDate",
+      "DataType": "DateType",
+      "Ordinal": 24
+    },
+    {
+      "FieldName": "Gender",
+      "DataType": "StringType",
+      "Ordinal": 25
+    },
+    {
+      "FieldName": "MemberSSN",
+      "DataType": "StringType",
+      "Ordinal": 26
+    },
+    {
+      "FieldName": "PermanentAddressLine1",
+      "DataType": "StringType",
+      "Ordinal": 27
+    },
+    {
+      "FieldName": "PermanentAddressLine2",
+      "DataType": "StringType",
+      "Ordinal": 28
+    },
+    {
+      "FieldName": "PermanentAddressLine3",
+      "DataType": "StringType",
+      "Ordinal": 29
+    },
+    {
+      "FieldName": "PermanentCity",
+      "DataType": "StringType",
+      "Ordinal": 30
+    },
+    {
+      "FieldName": "PermanentCounty",
+      "DataType": "StringType",
+      "Ordinal": 31
+    },
+    {
+      "FieldName": "PermanentState",
+      "DataType": "StringType",
+      "Ordinal": 32
+    },
+    {
+      "FieldName": "PermanentSCC",
+      "DataType": "StringType",
+      "Ordinal": 33
+    },
+    {
+      "FieldName": "PermanentZipCode",
+      "DataType": "StringType",
+      "Ordinal": 34
+    },
+    {
+      "FieldName": "MailingAddressLine1",
+      "DataType": "StringType",
+      "Ordinal": 35
+    },
+    {
+      "FieldName": "MailingAddressLine2",
+      "DataType": "StringType",
+      "Ordinal": 36
+    },
+    {
+      "FieldName": "MailingAddressLine3",
+      "DataType": "StringType",
+      "Ordinal": 37
+    },
+    {
+      "FieldName": "MailingCity",
+      "DataType": "StringType",
+      "Ordinal": 38
+    },
+    {
+      "FieldName": "MailingState",
+      "DataType": "StringType",
+      "Ordinal": 39
+    },
+    {
+      "FieldName": "MailingZipCode",
+      "DataType": "StringType",
+      "Ordinal": 40
+    },
+    {
+      "FieldName": "MailingCounty",
+      "DataType": "StringType",
+      "Ordinal": 41
+    },
+    {
+      "FieldName": "BillingAddressLine1",
+      "DataType": "StringType",
+      "Ordinal": 42
+    },
+    {
+      "FieldName": "BillingAddressLine2",
+      "DataType": "StringType",
+      "Ordinal": 43
+    },
+    {
+      "FieldName": "BillingAddressLine3",
+      "DataType": "StringType",
+      "Ordinal": 44
+    },
+    {
+      "FieldName": "BillingCity",
+      "DataType": "StringType",
+      "Ordinal": 45
+    },
+    {
+      "FieldName": "BillingState",
+      "DataType": "StringType",
+      "Ordinal": 46
+    },
+    {
+      "FieldName": "BillingZipCode",
+      "DataType": "StringType",
+      "Ordinal": 47
+    },
+    {
+      "FieldName": "PhoneNumber",
+      "DataType": "StringType",
+      "Ordinal": 48
+    },
+    {
+      "FieldName": "AlternatePhoneNumber",
+      "DataType": "StringType",
+      "Ordinal": 49
+    },
+    {
+      "FieldName": "Email",
+      "DataType": "StringType",
+      "Ordinal": 50
+    },
+    {
+      "FieldName": "EmergencyContactName",
+      "DataType": "StringType",
+      "Ordinal": 51
+    },
+    {
+      "FieldName": "EmergencyContactRelationship",
+      "DataType": "StringType",
+      "Ordinal": 52
+    },
+    {
+      "FieldName": "EmergencyContactPhoneNumber",
+      "DataType": "StringType",
+      "Ordinal": 53
+    },
+    {
+      "FieldName": "IDCardTriggerflag",
+      "DataType": "StringType",
+      "Ordinal": 54
+    },
+    {
+      "FieldName": "EndangeredMemberFlag",
+      "DataType": "StringType",
+      "Ordinal": 55
+    },
+    {
+      "FieldName": "OOAProcess",
+      "DataType": "StringType",
+      "Ordinal": 56
+    },
+    {
+      "FieldName": "OOASource",
+      "DataType": "StringType",
+      "Ordinal": 57
+    },
+    {
+      "FieldName": "DateofMove",
+      "DataType": "DateType",
+      "Ordinal": 58
+    },
+    {
+      "FieldName": "MoveDeadline",
+      "DataType": "DateType",
+      "Ordinal": 59
+    },
+    {
+      "FieldName": "MedicaidID",
+      "DataType": "StringType",
+      "Ordinal": 60
+    },
+    {
+      "FieldName": "MedicarePartAEffDate",
+      "DataType": "DateType",
+      "Ordinal": 61
+    },
+    {
+      "FieldName": "MedicarePartAEndDate",
+      "DataType": "DateType",
+      "Ordinal": 62
+    },
+    {
+      "FieldName": "MedicarePartBEffDate",
+      "DataType": "DateType",
+      "Ordinal": 63
+    },
+    {
+      "FieldName": "MedicarePartBEndDate",
+      "DataType": "DateType",
+      "Ordinal": 64
+    },
+    {
+      "FieldName": "MedicarePartDEffDate",
+      "DataType": "DateType",
+      "Ordinal": 65
+    },
+    {
+      "FieldName": "MedicarePartDEndDate",
+      "DataType": "DateType",
+      "Ordinal": 66
+    },
+    {
+      "FieldName": "Languagecode",
+      "DataType": "StringType",
+      "Ordinal": 67
+    },
+    {
+      "FieldName": "AlternativeFormatLargePrint",
+      "DataType": "StringType",
+      "Ordinal": 68
+    },
+    {
+      "FieldName": "AlternativeFormatBraille",
+      "DataType": "StringType",
+      "Ordinal": 69
+    },
+    {
+      "FieldName": "AlternativeFormatAudioTape",
+      "DataType": "StringType",
+      "Ordinal": 70
+    },
+    {
+      "FieldName": "Fax",
+      "DataType": "StringType",
+      "Ordinal": 71
+    },
+    {
+      "FieldName": "InLEPProcessStatus",
+      "DataType": "StringType",
+      "Ordinal": 72
+    },
+    {
+      "FieldName": "POAName",
+      "DataType": "StringType",
+      "Ordinal": 73
+    },
+    {
+      "FieldName": "POAAddress1",
+      "DataType": "StringType",
+      "Ordinal": 74
+    },
+    {
+      "FieldName": "POAAddress2",
+      "DataType": "StringType",
+      "Ordinal": 75
+    },
+    {
+      "FieldName": "POAAddress3",
+      "DataType": "StringType",
+      "Ordinal": 76
+    },
+    {
+      "FieldName": "POACity",
+      "DataType": "StringType",
+      "Ordinal": 77
+    },
+    {
+      "FieldName": "POACounty",
+      "DataType": "StringType",
+      "Ordinal": 78
+    },
+    {
+      "FieldName": "POAState",
+      "DataType": "StringType",
+      "Ordinal": 79
+    },
+    {
+      "FieldName": "POAZipCode",
+      "DataType": "StringType",
+      "Ordinal": 80
+    },
+    {
+      "FieldName": "POAPhoneNumber",
+      "DataType": "StringType",
+      "Ordinal": 81
+    },
+    {
+      "FieldName": "POARelationShip",
+      "DataType": "StringType",
+      "Ordinal": 82
+    },
+    {
+      "FieldName": "Race",
+      "DataType": "StringType",
+      "Ordinal": 83
+    },
+    {
+      "FieldName": "RaceCode",
+      "DataType": "StringType",
+      "Ordinal": 84
+    },
+    {
+      "FieldName": "RaceDataSource",
+      "DataType": "StringType",
+      "Ordinal": 85
+    },
+    {
+      "FieldName": "ikaUniqueID",
+      "DataType": "StringType",
+      "Ordinal": 86
+    },
+    {
+      "FieldName": "FamilyLinkIndicator",
+      "DataType": "StringType",
+      "Ordinal": 87
+    },
+    {
+      "FieldName": "InPremiumDelinquencyProcess",
+      "DataType": "StringType",
+      "Ordinal": 88
+    },
+    {
+      "FieldName": "ThirdPartyLiabilityEffDate",
+      "DataType": "DateType",
+      "Ordinal": 89
+    },
+    {
+      "FieldName": "ThirdPartyLiabilityTrnDate",
+      "DataType": "DateType",
+      "Ordinal": 90
+    },
+    {
+      "FieldName": "OwedPremium",
+      "DataType": "StringType",
+      "Ordinal": 91
+    },
+    {
+      "FieldName": "CaretakerFirstName",
+      "DataType": "StringType",
+      "Ordinal": 92
+    },
+    {
+      "FieldName": "CaretakerLastName",
+      "DataType": "StringType",
+      "Ordinal": 93
+    },
+    {
+      "FieldName": "CaretakerMiddleInitial",
+      "DataType": "StringType",
+      "Ordinal": 94
+    },
+    {
+      "FieldName": "EthnicityCode",
+      "DataType": "StringType",
+      "Ordinal": 95
+    },
+    {
+      "FieldName": "EthnicityDatasource",
+      "DataType": "StringType",
+      "Ordinal": 96
+    },
+    {
+      "FieldName": "SpokenLanguage",
+      "DataType": "StringType",
+      "Ordinal": 97
+    },
+    {
+      "FieldName": "SpokenLanguagesourcecode",
+      "DataType": "StringType",
+      "Ordinal": 98
+    },
+    {
+      "FieldName": "WrittenLanguageCode",
+      "DataType": "StringType",
+      "Ordinal": 99
+    },
+    {
+      "FieldName": "WrittenLanguageSourcecode",
+      "DataType": "StringType",
+      "Ordinal": 100
+    },
+    {
+      "FieldName": "OtherLanguage",
+      "DataType": "StringType",
+      "Ordinal": 101
+    },
+    {
+      "FieldName": "OtherLanguageSourcecode",
+      "DataType": "StringType",
+      "Ordinal": 102
+    },
+    {
+      "FieldName": "USCitizen",
+      "DataType": "StringType",
+      "Ordinal": 103
+    },
+    {
+      "FieldName": "AlternateKey1",
+      "DataType": "StringType",
+      "Ordinal": 104
+    },
+    {
+      "FieldName": "AlternateKey2",
+      "DataType": "StringType",
+      "Ordinal": 105
+    },
+    {
+      "FieldName": "AlternateKey3",
+      "DataType": "StringType",
+      "Ordinal": 106
+    },
+    {
+      "FieldName": "AlternateKey4",
+      "DataType": "StringType",
+      "Ordinal": 107
+    },
+    {
+      "FieldName": "AlternateKey5",
+      "DataType": "StringType",
+      "Ordinal": 108
+    },
+    {
+      "FieldName": "AlternateKey6",
+      "DataType": "StringType",
+      "Ordinal": 109
+    },
+    {
+      "FieldName": "AlternateKey7",
+      "DataType": "StringType",
+      "Ordinal": 110
+    },
+    {
+      "FieldName": "AlternateKey8",
+      "DataType": "StringType",
+      "Ordinal": 111
+    },
+    {
+      "FieldName": "AlternateKey9",
+      "DataType": "StringType",
+      "Ordinal": 112
+    },
+    {
+      "FieldName": "AlternateKey10",
+      "DataType": "StringType",
+      "Ordinal": 113
+    },
+    {
+      "FieldName": "MaskedMemberID",
+      "DataType": "StringType",
+      "Ordinal": 114
+    },
+    {
+      "FieldName": "EnrolleeEducation",
+      "DataType": "StringType",
+      "Ordinal": 115
+    },
+    {
+      "FieldName": "EnrolleeEmployment",
+      "DataType": "StringType",
+      "Ordinal": 116
+    },
+    {
+      "FieldName": "FullRowHash",
+      "DataType": "StringType",
+      "Ordinal": 117
+    },
+    {
+      "FieldName": "ProductID",
+      "DataType": "StringType",
+      "Ordinal": 118
+    }
+  ]
+}

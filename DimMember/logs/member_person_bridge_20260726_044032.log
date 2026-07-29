@@ -1,0 +1,6 @@
+2026-07-26 04:40:32,632 - INFO - Member Person Bridge Processing Started
+2026-07-26 04:40:44,629 - INFO - Configuration loaded:
+2026-07-26 04:40:44,630 - INFO -   Source Path: /Volumes/claimsprocessing/bronze/member_consolidated/
+2026-07-26 04:40:44,633 - INFO -   Silver Table: claimsprocessing.silver.silver_member_person_bridge
+2026-07-26 04:41:09,926 - INFO - Starting LoadSource from: /Volumes/claimsprocessing/bronze/member_consolidated/
+2026-07-26 04:41:10,416 - WARNING - No Delta table transaction log found at /Volumes/claimsprocessing/bronze/member_consolidated/. Returning clean empty DataFrame.
