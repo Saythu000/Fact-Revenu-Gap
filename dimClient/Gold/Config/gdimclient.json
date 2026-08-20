@@ -3,6 +3,7 @@
     {
       "SubGroupEntity": "dimClient",
       "DestinationTable": "claimsprocessing.gold.gold_dimclient",
+      "FHIRStandard": "HL7 FHIR R4 Organization Resource",
       "SourceTables": [
         {
           "Entity": "client_raw",

@@ -2,7 +2,7 @@ WITH sourceTbl AS
 (
 SELECT
   ifnull(dimMonth.monthKey, -99) as pecYearMonthKey
- ,ifnull(dimClient.clientKey, -99) as clientKey
+ ,ifnull(dimClient.client_key, -99) as clientKey
  ,ifnull(dimMember.memberKey, -99) as memberKey
  ,ifnull(dimMemberGroup.memberGroupKey, '-99') as memberGroupKey
  ,ifnull(mrg.planID, '') as planID
@@ -19,7 +19,7 @@ from memberRevenueGap mrg
 left join dimMonth
  on mrg.reportMonth = concat(dimMonth.yearNumber,lpad(dimMonth.monthNumber,2,'0'))
 left join dimClient
- on upper(mrg.clientCode) = upper(dimClient.clientCode)
+ on upper(mrg.clientCode) = upper(dimClient.client_code)
 left join dimMember
  on mrg.planMemberID = dimMember.planMemberID
  and CAST(dimMember.isCurrent AS INT) = 1
