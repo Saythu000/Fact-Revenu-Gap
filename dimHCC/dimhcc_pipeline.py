@@ -63,6 +63,7 @@ df_xref_count = spark.sql("SELECT COUNT(*) AS total_crosswalk_mappings FROM clai
 display(df_hcc_count)
 display(df_xref_count)
 
-df_sample = spark.sql("SELECT hcc_code, hcc_model_version, hcc_model_type, hcc_description, effective_year, hcc_key FROM claimsprocessing.gold.gold_dimhcc LIMIT 10")
+df_sample = spark.sql("SELECT HCCNumber, HCCVersion, HCCType, HCCDescription, EffectiveYear, hccKey FROM claimsprocessing.gold.gold_dimhcc LIMIT 10")
 display(df_sample)
+
 

@@ -13,13 +13,13 @@ SELECT
   ,a.*
 FROM tempSQLScript a
   INNER JOIN DestinationTable t 
-    ON a.provider_id = t.provider_id
-      AND a.provider_key <> t.provider_key
-      AND t.is_current = 1
+    ON a.ESAIInternalProviderID = t.ESAIInternalProviderID
+      AND a.providerKey <> t.providerKey
+      AND t.isCurrent = true
 ),
 AllProvidersFromSource AS (
 SELECT 
-   a.provider_id AS pID
+   a.ESAIInternalProviderID AS pID
   ,a.*
 FROM tempSQLScript a
 ),
@@ -32,126 +32,126 @@ FROM AllProvidersFromSource
 )
 MERGE INTO DestinationTable t 
 USING (SELECT * FROM ProvidersCombined) s	
-   ON s.pID = t.provider_id 
-WHEN MATCHED AND s.provider_key <> t.provider_key AND t.is_current = 1 THEN UPDATE SET	
-	 t.effective_end_date = current_date() 
-	,t.is_current = 0 
+   ON s.pID = t.ESAIInternalProviderID 
+WHEN MATCHED AND s.providerKey <> t.providerKey AND t.isCurrent = true THEN UPDATE SET	
+ 	 t.effectiveEndDate = current_date() 
+ 	,t.isCurrent = false 
 WHEN NOT MATCHED THEN INSERT 
 ( 
-   provider_key
-  ,effective_start_date
-  ,effective_end_date
-  ,is_current
-  ,provider_id
-  ,npi
-  ,tin
-  ,last_name
-  ,first_name
-  ,middle_name
-  ,phone_number
-  ,address1
-  ,address2
-  ,city
-  ,state
-  ,zip_code
-  ,practice_code
-  ,practice_name
-  ,provider_org_code
-  ,provider_org_name
-  ,provider_specialty_description
-  ,taxonomy_code_1
-  ,hp_specialty_code_1
-  ,adv_provider_specialty_code_1
-  ,taxonomy_code_2
-  ,hp_specialty_code_2
-  ,adv_provider_specialty_code_2
-  ,taxonomy_code_3
-  ,hp_specialty_code_3
-  ,adv_provider_specialty_code_3
-  ,taxonomy_code_4
-  ,hp_specialty_code_4
-  ,adv_provider_specialty_code_4
-  ,taxonomy_code_5
-  ,hp_specialty_code_5
-  ,adv_provider_specialty_code_5
-  ,is_prescribe_privilege
-  ,provider_dea
-  ,payer_id
-  ,is_contracted
-  ,provider_hai
-  ,hospital_id
-  ,is_excluded_from_provider_reporting
-  ,alt_prov_reporting_1
-  ,alt_prov_reporting_2
-  ,alt_prov_reporting_3
-  ,alt_prov_reporting_4
-  ,alt_prov_reporting_5
-  ,alt_prov_reporting_6
-  ,alt_prov_reporting_7
-  ,alt_prov_reporting_8
-  ,alt_prov_reporting_9
-  ,alt_prov_reporting_10
-  ,program_type
-  ,practice_targeted_status
-  ,product_id
-  ,provider_type
+   providerKey
+  ,effectiveStartDate
+  ,effectiveEndDate
+  ,isCurrent
+  ,ESAIInternalProviderID
+  ,identifier_npi
+  ,identifier_tin
+  ,name_family
+  ,name_given_first
+  ,name_given_middle
+  ,telecom_phone
+  ,address_line1
+  ,address_line2
+  ,address_city
+  ,address_state
+  ,address_postalCode
+  ,practiceCode
+  ,practiceName
+  ,providerOrgCode
+  ,providerOrgName
+  ,providerSpecialtyDescription
+  ,taxonomyCode1
+  ,hpSpecialtyCode1
+  ,advProviderSpecialtyCode1
+  ,taxonomyCode2
+  ,hpSpecialtyCode2
+  ,advProviderSpecialtyCode2
+  ,taxonomyCode3
+  ,hpSpecialtyCode3
+  ,advProviderSpecialtyCode3
+  ,taxonomyCode4
+  ,hpSpecialtyCode4
+  ,advProviderSpecialtyCode4
+  ,taxonomyCode5
+  ,hpSpecialtyCode5
+  ,advProviderSpecialtyCode5
+  ,extension_isPrescribePrivilege
+  ,identifier_providerDEA
+  ,identifier_payerID
+  ,extension_isContracted
+  ,extension_providerHAI
+  ,identifier_hospitalID
+  ,extension_isExcludedFromProviderReporting
+  ,identifier_alternateKey1
+  ,identifier_alternateKey2
+  ,identifier_alternateKey3
+  ,identifier_alternateKey4
+  ,identifier_alternateKey5
+  ,identifier_alternateKey6
+  ,identifier_alternateKey7
+  ,identifier_alternateKey8
+  ,identifier_alternateKey9
+  ,identifier_alternateKey10
+  ,extension_programType
+  ,extension_practiceTargetedStatus
+  ,extension_ProductID
+  ,extension_ProviderType
 ) 
 VALUES ( 
-   s.provider_key
-  ,s.effective_start_date
-  ,s.effective_end_date
-  ,s.is_current
-  ,s.provider_id
-  ,s.npi
-  ,s.tin
-  ,s.last_name
-  ,s.first_name
-  ,s.middle_name
-  ,s.phone_number
-  ,s.address1
-  ,s.address2
-  ,s.city
-  ,s.state
-  ,s.zip_code
-  ,s.practice_code
-  ,s.practice_name
-  ,s.provider_org_code
-  ,s.provider_org_name
-  ,s.provider_specialty_description
-  ,s.taxonomy_code_1
-  ,s.hp_specialty_code_1
-  ,s.adv_provider_specialty_code_1
-  ,s.taxonomy_code_2
-  ,s.hp_specialty_code_2
-  ,s.adv_provider_specialty_code_2
-  ,s.taxonomy_code_3
-  ,s.hp_specialty_code_3
-  ,s.adv_provider_specialty_code_3
-  ,s.taxonomy_code_4
-  ,s.hp_specialty_code_4
-  ,s.adv_provider_specialty_code_4
-  ,s.taxonomy_code_5
-  ,s.hp_specialty_code_5
-  ,s.adv_provider_specialty_code_5
-  ,s.is_prescribe_privilege
-  ,s.provider_dea
-  ,s.payer_id
-  ,s.is_contracted
-  ,s.provider_hai
-  ,s.hospital_id
-  ,s.is_excluded_from_provider_reporting
-  ,s.alt_prov_reporting_1
-  ,s.alt_prov_reporting_2
-  ,s.alt_prov_reporting_3
-  ,s.alt_prov_reporting_4
-  ,s.alt_prov_reporting_5
-  ,s.alt_prov_reporting_6
-  ,s.alt_prov_reporting_7
-  ,s.alt_prov_reporting_8
-  ,s.alt_prov_reporting_9
-  ,s.alt_prov_reporting_10
-  ,s.program_type
-  ,s.practice_targeted_status
-  ,s.product_id
-  ,s.provider_type
+   s.providerKey
+  ,s.effectiveStartDate
+  ,s.effectiveEndDate
+  ,s.isCurrent
+  ,s.ESAIInternalProviderID
+  ,s.identifier_npi
+  ,s.identifier_tin
+  ,s.name_family
+  ,s.name_given_first
+  ,s.name_given_middle
+  ,s.telecom_phone
+  ,s.address_line1
+  ,s.address_line2
+  ,s.address_city
+  ,s.address_state
+  ,s.address_postalCode
+  ,s.practiceCode
+  ,s.practiceName
+  ,s.providerOrgCode
+  ,s.providerOrgName
+  ,s.providerSpecialtyDescription
+  ,s.taxonomyCode1
+  ,s.hpSpecialtyCode1
+  ,s.advProviderSpecialtyCode1
+  ,s.taxonomyCode2
+  ,s.hpSpecialtyCode2
+  ,s.advProviderSpecialtyCode2
+  ,s.taxonomyCode3
+  ,s.hpSpecialtyCode3
+  ,s.advProviderSpecialtyCode3
+  ,s.taxonomyCode4
+  ,s.hpSpecialtyCode4
+  ,s.advProviderSpecialtyCode4
+  ,s.taxonomyCode5
+  ,s.hpSpecialtyCode5
+  ,s.advProviderSpecialtyCode5
+  ,s.extension_isPrescribePrivilege
+  ,s.identifier_providerDEA
+  ,s.identifier_payerID
+  ,s.extension_isContracted
+  ,s.extension_providerHAI
+  ,s.identifier_hospitalID
+  ,s.extension_isExcludedFromProviderReporting
+  ,s.identifier_alternateKey1
+  ,s.identifier_alternateKey2
+  ,s.identifier_alternateKey3
+  ,s.identifier_alternateKey4
+  ,s.identifier_alternateKey5
+  ,s.identifier_alternateKey6
+  ,s.identifier_alternateKey7
+  ,s.identifier_alternateKey8
+  ,s.identifier_alternateKey9
+  ,s.identifier_alternateKey10
+  ,s.extension_programType
+  ,s.extension_practiceTargetedStatus
+  ,s.extension_ProductID
+  ,s.extension_ProviderType
 );

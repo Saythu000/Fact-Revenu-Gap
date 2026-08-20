@@ -1,74 +1,82 @@
-WITH sourceTbl AS
-(
+-- ======================================================================================
+-- Transformation: Gold Fact - factmemberrevenuegap Processing
+-- Standard: HL7 FHIR R4 & Conformed Star Schema Alignment
+-- Target Table: claimsprocessing.gold.gold_factmemberrevenuegap
+-- Description: Aggregates member revenue gaps with conformed Gold dimensions (Client, Member,
+--              MemberGroup, HCC, Provider, AlertGroup, Date, Month).
+-- ======================================================================================
+
+WITH sourceTbl AS (
 SELECT
-  ifnull(dimMonth.monthKey, -99) as pecYearMonthKey
- ,ifnull(dimClient.client_key, -99) as clientKey
- ,ifnull(dimMember.memberKey, -99) as memberKey
- ,ifnull(dimMemberGroup.memberGroupKey, '-99') as memberGroupKey
- ,ifnull(mrg.planID, '') as planID
- ,ifnull(dimHCC.hcc_key, -99) as hccKey
- ,ifnull(dimDate1.dateKey, -99) as snapshotDateKey
- ,ifnull(dimProvider.provider_key, -99) as planProviderKey
- ,ifnull(dimAlertGroup.alert_group_key, -99) as alertGroupKey
- ,case when mrg.closureReason is not null then 'Y' else 'N' end as isHCCClosed
- ,ifnull(dimDate2.dateKey, -99) as lastDCConfirmedDateKey
- ,ifnull(dimDate3.dateKey, -99) as lastPCPVisitDateKey
- ,ifnull(dimDate4.dateKey, -99) as lastAWVDateKey
- ,current_date()  as loadDate
-from memberRevenueGap mrg
-left join dimMonth
- on mrg.reportMonth = concat(dimMonth.yearNumber,lpad(dimMonth.monthNumber,2,'0'))
-left join dimClient
- on upper(mrg.clientCode) = upper(dimClient.client_code)
-left join dimMember
- on mrg.planMemberID = dimMember.planMemberID
- and CAST(dimMember.isCurrent AS INT) = 1
-left join dimMemberGroup
- on dimMember.subscriberID = dimMemberGroup.SubscriberID
-left join dimHCC
- on mrg.hccNumber = dimHCC.hcc_code
- and substring(mrg.reportMonth, 1,4) = dimHCC.effective_year
- and mrg.HCCVersion = dimHCC.hcc_model_version
- and upper(dimHCC.hcc_model_type) in ('COMM', 'ESRD', 'RX')
-left join dimProvider
- on mrg.providerID = dimProvider.provider_id
- and CAST(dimProvider.is_current AS INT) = 1
-left join dimAlertGroup
- on mrg.alertCategory = dimAlertGroup.alert_group_code
-left join dimDate dimDate1
- on mrg.snapshotDate = dimDate1.date
-left join dimDate dimDate2
- on mrg.lastDCConfirmedDate = dimDate2.date
-left join dimDate dimDate3
- on mrg.lastPCPVisitDate = dimDate3.date
-left join dimDate dimDate4
- on mrg.lastAWVDate = dimDate4.date
+   IFNULL(dimMonth.monthKey, -99) AS pecYearMonthKey
+  ,IFNULL(dimClient.clientKey, -99) AS clientKey
+  ,IFNULL(dimMember.memberKey, -99) AS memberKey
+  ,IFNULL(dimMemberGroup.memberGroupKey, '-99') AS memberGroupKey
+  ,IFNULL(mrg.planID, '') AS planID
+  ,IFNULL(dimHCC.hccKey, -99) AS hccKey
+  ,IFNULL(dimDate1.dateKey, -99) AS snapshotDateKey
+  ,IFNULL(dimProvider.providerKey, -99) AS planProviderKey
+  ,IFNULL(dimAlertGroup.alertGroupKey, -99) AS alertGroupKey
+  ,CASE WHEN mrg.closureReason IS NOT NULL THEN 'Y' ELSE 'N' END AS isHCCClosed
+  ,IFNULL(dimDate2.dateKey, -99) AS lastDCConfirmedDateKey
+  ,IFNULL(dimDate3.dateKey, -99) AS lastPCPVisitDateKey
+  ,IFNULL(dimDate4.dateKey, -99) AS lastAWVDateKey
+  ,CURRENT_DATE() AS loadDate
+FROM memberRevenueGap mrg
+LEFT JOIN dimMonth
+  ON mrg.reportMonth = CONCAT(dimMonth.yearNumber, LPAD(dimMonth.monthNumber, 2, '0'))
+LEFT JOIN dimClient
+  ON UPPER(mrg.clientCode) = UPPER(dimClient.clientCode)
+LEFT JOIN dimMember
+  ON mrg.planMemberID = dimMember.planMemberID
+  AND CAST(dimMember.isCurrent AS INT) = 1
+LEFT JOIN dimMemberGroup
+  ON dimMember.subscriberID = dimMemberGroup.SubscriberID
+LEFT JOIN dimHCC
+  ON mrg.hccNumber = dimHCC.HCCNumber
+  AND SUBSTRING(mrg.reportMonth, 1, 4) = dimHCC.EffectiveYear
+  AND mrg.HCCVersion = dimHCC.HCCVersion
+  AND UPPER(dimHCC.HCCType) IN ('COMM', 'ESRD', 'RX')
+LEFT JOIN dimProvider
+  ON mrg.providerID = dimProvider.ESAIInternalProviderID
+  AND CAST(dimProvider.isCurrent AS INT) = 1
+LEFT JOIN dimAlertGroup
+  ON mrg.alertCategory = dimAlertGroup.alertGroupCode
+LEFT JOIN dimDate dimDate1
+  ON mrg.snapshotDate = dimDate1.date
+LEFT JOIN dimDate dimDate2
+  ON mrg.lastDCConfirmedDate = dimDate2.date
+LEFT JOIN dimDate dimDate3
+  ON mrg.lastPCPVisitDate = dimDate3.date
+LEFT JOIN dimDate dimDate4
+  ON mrg.lastAWVDate = dimDate4.date
 )
 SELECT 
- pecYearMonthKey
-,clientKey
-,memberKey
-,memberGroupKey
-,planID
-,hccKey
-,snapshotDateKey
-,planProviderKey
-,alertGroupKey
-,isHCCClosed
-,lastDCConfirmedDateKey
-,lastPCPVisitDateKey
-,lastAWVDateKey
-,sha2(concat_ws('|', pecYearMonthKey, memberKey, hccKey, clientKey), 256) as factMemberRevenueGapHashKey
-,sha2(concat_ws('|',
-   isHCCClosed,
-   planID,
-   snapshotDateKey,
-   planProviderKey,
-   alertGroupKey,
-   lastDCConfirmedDateKey,
-   lastPCPVisitDateKey,
-   lastAWVDateKey), 256) as fullRowHash
-,ifnull(dim.dateKey, -99) as loadDateKey
+   pecYearMonthKey
+  ,clientKey
+  ,memberKey
+  ,memberGroupKey
+  ,planID
+  ,hccKey
+  ,snapshotDateKey
+  ,planProviderKey
+  ,alertGroupKey
+  ,isHCCClosed
+  ,lastDCConfirmedDateKey
+  ,lastPCPVisitDateKey
+  ,lastAWVDateKey
+  ,SHA2(CONCAT_WS('|', pecYearMonthKey, memberKey, hccKey, clientKey), 256) AS factMemberRevenueGapHashKey
+  ,SHA2(CONCAT_WS('|',
+     isHCCClosed,
+     planID,
+     snapshotDateKey,
+     planProviderKey,
+     alertGroupKey,
+     lastDCConfirmedDateKey,
+     lastPCPVisitDateKey,
+     lastAWVDateKey), 256) AS fullRowHash
+  ,IFNULL(dim.dateKey, -99) AS loadDateKey
 FROM sourceTbl sr
 CROSS JOIN dimDate dim
-ON sr.loadDate = dim.date
+  ON sr.loadDate = dim.date;
+

@@ -5,10 +5,11 @@
 -- Organization.partOf -> sub_client_code, sub_client_name
 
 CREATE TABLE IF NOT EXISTS claimsprocessing.gold.gold_dimclient (
-  client_key       BIGINT   COMMENT 'Surrogate Primary Key - Organization Identifier Hash'
- ,client_code      STRING   COMMENT 'Primary Client / Health Plan Code'
- ,client_name      STRING   COMMENT 'Primary Client / Health Plan Legal Name'
- ,sub_client_code  STRING   COMMENT 'Sub-Client / Division / Line of Business Code'
- ,sub_client_name  STRING   COMMENT 'Sub-Client / Division / Line of Business Display Name'
- ,hash_key         BIGINT   COMMENT 'Delta Lake SCD/Merge Change Hash Key'
+  clientKey      int      COMMENT 'Surrogate Primary Key - Organization Identifier Hash'
+ ,clientCode     string   COMMENT 'Primary Client / Health Plan Code'
+ ,clientName     string   COMMENT 'Primary Client / Health Plan Legal Name'
+ ,subClientCode  string   COMMENT 'Sub-Client / Division / Line of Business Code'
+ ,subClientName  string   COMMENT 'Sub-Client / Division / Line of Business Display Name'
+ ,hashKey        int      COMMENT 'Delta Lake SCD/Merge Change Hash Key'
 ) USING delta;
+

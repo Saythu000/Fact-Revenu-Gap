@@ -1,29 +1,30 @@
 -- HL7 FHIR R4 Standardized Client Dimension Delta Merge Engine
 MERGE INTO claimsprocessing.gold.gold_dimclient AS client
 USING temp_updates AS updates
-ON client.client_key = updates.client_key
+ON client.clientKey = updates.clientKey
 WHEN MATCHED AND (
-   client.client_name <> updates.client_name 
-   OR client.sub_client_name <> updates.sub_client_name
+   client.clientName <> updates.clientName 
+   OR client.subClientName <> updates.subClientName
 ) THEN
   UPDATE SET
-     client.client_name = updates.client_name
-    ,client.sub_client_name = updates.sub_client_name
-    ,client.hash_key = updates.hash_key
+     client.clientName = updates.clientName
+    ,client.subClientName = updates.subClientName
+    ,client.hashKey = updates.hashKey
 WHEN NOT MATCHED THEN
   INSERT (
-     client_key
-    ,client_code
-    ,client_name
-    ,sub_client_code
-    ,sub_client_name
-    ,hash_key
+     clientKey
+    ,clientCode
+    ,clientName
+    ,subClientCode
+    ,subClientName
+    ,hashKey
   )
   VALUES (
-     updates.client_key
-    ,updates.client_code
-    ,updates.client_name
-    ,updates.sub_client_code
-    ,updates.sub_client_name
-    ,updates.hash_key
+     updates.clientKey
+    ,updates.clientCode
+    ,updates.clientName
+    ,updates.subClientCode
+    ,updates.subClientName
+    ,updates.hashKey
   );
+

@@ -66,12 +66,12 @@ for entity_row in config_data.get("SubLayerProcessing", []):
     # Ensure Target Table Exists
     spark.sql("""
     CREATE TABLE IF NOT EXISTS claimsprocessing.gold.gold_dimclient (
-     client_key       BIGINT
-    ,client_code      STRING
-    ,client_name      STRING
-    ,sub_client_code  STRING
-    ,sub_client_name  STRING
-    ,hash_key         BIGINT
+     clientKey      int
+    ,clientCode     string
+    ,clientName     string
+    ,subClientCode  string
+    ,subClientName  string
+    ,hashKey        int
     ) USING delta;
     """)
     
@@ -88,5 +88,6 @@ for entity_row in config_data.get("SubLayerProcessing", []):
 df_client_count = spark.sql("SELECT COUNT(*) AS total_clients FROM claimsprocessing.gold.gold_dimclient")
 display(df_client_count)
 
-df_sample = spark.sql("SELECT client_key, client_code, client_name, sub_client_code, sub_client_name, hash_key FROM claimsprocessing.gold.gold_dimclient LIMIT 10")
+df_sample = spark.sql("SELECT clientKey, clientCode, clientName, subClientCode, subClientName, hashKey FROM claimsprocessing.gold.gold_dimclient LIMIT 10")
 display(df_sample)
+

@@ -13,7 +13,7 @@ spark.sql("CREATE DATABASE IF NOT EXISTS claimsprocessing.gold")
 
 # Step 2: Ensure DDL tables exist
 spark.sql("""
-CREATE TABLE IF NOT EXISTS claimsprocessing.gold.factmemberrevenuegap (
+CREATE TABLE IF NOT EXISTS claimsprocessing.gold.gold_factmemberrevenuegap (
     pecYearMonthKey             INT,
     clientKey                  INT,
     memberKey                  BIGINT,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS claimsprocessing.gold.factmemberrevenuegap (
     planID                     STRING,
     hccKey                     INT,
     snapshotDateKey            INT,
-    planProviderKey            INT,
+    planProviderKey            BIGINT,
     alertGroupKey              INT,
     isHCCClosed                STRING,
     lastDCConfirmedDateKey     INT,
@@ -68,7 +68,7 @@ spark.table("claimsprocessing.gold.gold_dimmonth").createOrReplaceTempView("dimM
 if spark.catalog.tableExists("claimsprocessing.gold.gold_dimprovider"):
     spark.table("claimsprocessing.gold.gold_dimprovider").createOrReplaceTempView("dimProvider")
 else:
-    spark.sql("CREATE OR REPLACE TEMP VIEW dimProvider AS SELECT -99 AS providerKey, '' AS providerID, 1 AS isCurrent")
+    spark.sql("CREATE OR REPLACE TEMP VIEW dimProvider AS SELECT -99 AS providerKey, '' AS ESAIInternalProviderID, 1 AS isCurrent")
 
 # Load SQL Processing Script
 sql_script_file = os.path.join(os.path.dirname(config_path), config_data["SQLScriptPath"])
@@ -114,4 +114,4 @@ display(spark.sql("SHOW TABLES IN claimsprocessing.gold"))
 # MAGIC     hccKey,
 # MAGIC     snapshotDateKey,
 # MAGIC     isHCCClosed
-# MAGIC FROM claimsprocessing.gold.factmemberrevenuegap;
+# MAGIC FROM claimsprocessing.gold.gold_factmemberrevenuegap;

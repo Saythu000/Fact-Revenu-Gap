@@ -2,7 +2,7 @@
   "SubLayerProcessing": [
     {
       "SubGroupEntity": "factmemberrevenuegap",
-      "DestinationTable": "claimsprocessing.gold.factmemberrevenuegap",
+      "DestinationTable": "claimsprocessing.gold.gold_factmemberrevenuegap",
       "SourceTables": [
         {
           "Entity": "memberRevenueGap",

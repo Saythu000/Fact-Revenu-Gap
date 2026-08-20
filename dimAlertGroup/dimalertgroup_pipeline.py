@@ -119,12 +119,12 @@ def run_dimalertgroup_pipeline():
     try:
         spark.sql(f"""
         CREATE TABLE IF NOT EXISTS {dest_gold} (
-            alert_group_key         BIGINT       COMMENT 'Surrogate primary key',
-            alert_group_code        STRING       COMMENT 'Natural alert group code',
-            alert_group_description STRING       COMMENT 'Detailed category description',
-            display_text            STRING       COMMENT 'User display text',
-            sort_order              INT          COMMENT 'UI sort sequence',
-            is_active               BOOLEAN      COMMENT 'Active status flag'
+            alertGroupKey         int          COMMENT 'Surrogate primary key',
+            alertGroupCode        string       COMMENT 'Natural alert group code',
+            alertGroupDescription string       COMMENT 'Detailed category description',
+            displayText            string       COMMENT 'User display text',
+            sortOrder              int          COMMENT 'UI sort sequence',
+            isActive               boolean      COMMENT 'Active status flag'
         ) USING delta;
         """)
         spark.sql(merge_gold)
@@ -133,16 +133,17 @@ def run_dimalertgroup_pipeline():
         local_dest = dest_gold.replace("claimsprocessing.", "")
         spark.sql(f"""
         CREATE TABLE IF NOT EXISTS {local_dest} (
-            alert_group_key         BIGINT,
-            alert_group_code        STRING,
-            alert_group_description STRING,
-            display_text            STRING,
-            sort_order              INT,
-            is_active               BOOLEAN
+            alertGroupKey         int,
+            alertGroupCode        string,
+            alertGroupDescription string,
+            displayText            string,
+            sortOrder              int,
+            isActive               boolean
         ) USING delta;
         """)
         local_merge = merge_gold.replace(dest_gold, local_dest)
         spark.sql(local_merge)
+
 
     print("=== [dimAlertGroup] Gold Conformed Dimension Load complete! ===")
 

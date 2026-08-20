@@ -10,8 +10,9 @@
           "SourceFormat": "delta"
         }
       ],
-      "SQLScript": "SELECT alert_group_id AS alert_group_key, alert_group_code, alert_group_description, display_text, sort_order, is_active FROM alertGroup",
-      "MergeScript": "MERGE INTO claimsprocessing.gold.gold_dimalertgroup t USING (SELECT * FROM tempSQLScript) s ON s.alert_group_key = t.alert_group_key WHEN MATCHED THEN UPDATE SET alert_group_code = s.alert_group_code, alert_group_description = s.alert_group_description, display_text = s.display_text, sort_order = s.sort_order, is_active = s.is_active WHEN NOT MATCHED THEN INSERT (alert_group_key, alert_group_code, alert_group_description, display_text, sort_order, is_active) VALUES (s.alert_group_key, s.alert_group_code, s.alert_group_description, s.display_text, s.sort_order, s.is_active)"
+      "SQLScript": "SELECT alert_group_id AS alertGroupKey, alert_group_code AS alertGroupCode, alert_group_description AS alertGroupDescription, display_text AS displayText, sort_order AS sortOrder, is_active AS isActive FROM alertGroup",
+      "MergeScript": "MERGE INTO claimsprocessing.gold.gold_dimalertgroup t USING (SELECT * FROM tempSQLScript) s ON s.alertGroupKey = t.alertGroupKey WHEN MATCHED THEN UPDATE SET alertGroupCode = s.alertGroupCode, alertGroupDescription = s.alertGroupDescription, displayText = s.displayText, sortOrder = s.sortOrder, isActive = s.isActive WHEN NOT MATCHED THEN INSERT (alertGroupKey, alertGroupCode, alertGroupDescription, displayText, sortOrder, isActive) VALUES (s.alertGroupKey, s.alertGroupCode, s.alertGroupDescription, s.displayText, s.sortOrder, s.isActive)"
     }
   ]
 }
+
