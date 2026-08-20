@@ -8,7 +8,7 @@ SELECT
  ,ifnull(mrg.planID, '') as planID
  ,ifnull(dimHCC.hcc_key, -99) as hccKey
  ,ifnull(dimDate1.dateKey, -99) as snapshotDateKey
- ,ifnull(dimProvider.providerKey, -99) as planProviderKey
+ ,ifnull(dimProvider.provider_key, -99) as planProviderKey
  ,ifnull(dimAlertGroup.alert_group_key, -99) as alertGroupKey
  ,case when mrg.closureReason is not null then 'Y' else 'N' end as isHCCClosed
  ,ifnull(dimDate2.dateKey, -99) as lastDCConfirmedDateKey
@@ -31,8 +31,8 @@ left join dimHCC
  and mrg.HCCVersion = dimHCC.hcc_model_version
  and upper(dimHCC.hcc_model_type) in ('COMM', 'ESRD', 'RX')
 left join dimProvider
- on mrg.providerID = dimProvider.providerID
- and CAST(dimProvider.isCurrent AS INT) = 1
+ on mrg.providerID = dimProvider.provider_id
+ and CAST(dimProvider.is_current AS INT) = 1
 left join dimAlertGroup
  on mrg.alertCategory = dimAlertGroup.alert_group_code
 left join dimDate dimDate1

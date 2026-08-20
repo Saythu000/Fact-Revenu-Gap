@@ -1,20 +1,29 @@
-WITH Type2ProvidersToUpdate AS(
+-- ======================================================================================
+-- MERGE Script: dimProvider (Healthcare Practitioner & Organization) SCD Type 2 Load
+-- Standard: HL7 FHIR R4 (Practitioner / PractitionerRole / Organization Alignment)
+-- Target Table: claimsprocessing.gold.gold_dimprovider (DestinationTable)
+-- Source Table: tempSQLScript
+-- Description: Performs SCD Type 2 MERGE updates to maintain historical validity
+--              windows and active flags for healthcare provider records.
+-- ======================================================================================
+
+WITH Type2ProvidersToUpdate AS (
 SELECT 
    NULL AS pID
   ,a.*
 FROM tempSQLScript a
   INNER JOIN DestinationTable t 
-    ON a.providerID = t.providerID
-      AND a.providerKey <> t.providerKey
-      AND t.isCurrent = 1
+    ON a.provider_id = t.provider_id
+      AND a.provider_key <> t.provider_key
+      AND t.is_current = 1
 ),
-AllProvidersFromSource AS(
+AllProvidersFromSource AS (
 SELECT 
-   a.providerID AS pID
+   a.provider_id AS pID
   ,a.*
 FROM tempSQLScript a
 ),
-ProvidersCombined AS(
+ProvidersCombined AS (
 SELECT * 
 FROM Type2ProvidersToUpdate
 UNION ALL
@@ -23,126 +32,126 @@ FROM AllProvidersFromSource
 )
 MERGE INTO DestinationTable t 
 USING (SELECT * FROM ProvidersCombined) s	
-   ON s.pID = t.providerID 
-WHEN MATCHED AND s.providerKey <> t.providerKey AND t.isCurrent = 1 THEN UPDATE SET	
-	 t.effectiveEndDate = current_date() 
-	,t.isCurrent = 0 
+   ON s.pID = t.provider_id 
+WHEN MATCHED AND s.provider_key <> t.provider_key AND t.is_current = 1 THEN UPDATE SET	
+	 t.effective_end_date = current_date() 
+	,t.is_current = 0 
 WHEN NOT MATCHED THEN INSERT 
 ( 
-   providerKey
-  ,effectiveStartDate
-  ,effectiveEndDate
-  ,isCurrent
-  ,providerID
+   provider_key
+  ,effective_start_date
+  ,effective_end_date
+  ,is_current
+  ,provider_id
   ,npi
   ,tin
-  ,lastName
-  ,firstName
-  ,middleName
-  ,phoneNumber
+  ,last_name
+  ,first_name
+  ,middle_name
+  ,phone_number
   ,address1
   ,address2
   ,city
   ,state
-  ,zipCode
-  ,practiceCode
-  ,practiceName
-  ,providerOrgCode
-  ,providerOrgName
-  ,providerSpecialtyDescription
-  ,taxonomyCode1
-  ,hpSpecialtyCode1
-  ,advProviderSpecialtyCode1
-  ,taxonomyCode2
-  ,hpSpecialtyCode2
-  ,advProviderSpecialtyCode2
-  ,taxonomyCode3
-  ,hpSpecialtyCode3
-  ,advProviderSpecialtyCode3
-  ,taxonomyCode4
-  ,hpSpecialtyCode4
-  ,advProviderSpecialtyCode4
-  ,taxonomyCode5
-  ,hpSpecialtyCode5
-  ,advProviderSpecialtyCode5
-  ,isPrescribePrivilege
-  ,providerDEA
-  ,payerID
-  ,isContracted
-  ,providerHAI
-  ,hospitalID
-  ,isExcludedFromProviderReporting
-  ,altProvReporting1
-  ,altProvReporting2
-  ,altProvReporting3
-  ,altProvReporting4
-  ,altProvReporting5
-  ,altProvReporting6
-  ,altProvReporting7
-  ,altProvReporting8
-  ,altProvReporting9
-  ,altProvReporting10
-  ,programType
-  ,practiceTargetedStatus
-  ,ProductID
-  ,ProviderType
-  ) 
- VALUES ( 
-   s.providerKey
-  ,s.effectiveStartDate
-  ,s.effectiveEndDate
-  ,s.isCurrent
-  ,s.providerID
+  ,zip_code
+  ,practice_code
+  ,practice_name
+  ,provider_org_code
+  ,provider_org_name
+  ,provider_specialty_description
+  ,taxonomy_code_1
+  ,hp_specialty_code_1
+  ,adv_provider_specialty_code_1
+  ,taxonomy_code_2
+  ,hp_specialty_code_2
+  ,adv_provider_specialty_code_2
+  ,taxonomy_code_3
+  ,hp_specialty_code_3
+  ,adv_provider_specialty_code_3
+  ,taxonomy_code_4
+  ,hp_specialty_code_4
+  ,adv_provider_specialty_code_4
+  ,taxonomy_code_5
+  ,hp_specialty_code_5
+  ,adv_provider_specialty_code_5
+  ,is_prescribe_privilege
+  ,provider_dea
+  ,payer_id
+  ,is_contracted
+  ,provider_hai
+  ,hospital_id
+  ,is_excluded_from_provider_reporting
+  ,alt_prov_reporting_1
+  ,alt_prov_reporting_2
+  ,alt_prov_reporting_3
+  ,alt_prov_reporting_4
+  ,alt_prov_reporting_5
+  ,alt_prov_reporting_6
+  ,alt_prov_reporting_7
+  ,alt_prov_reporting_8
+  ,alt_prov_reporting_9
+  ,alt_prov_reporting_10
+  ,program_type
+  ,practice_targeted_status
+  ,product_id
+  ,provider_type
+) 
+VALUES ( 
+   s.provider_key
+  ,s.effective_start_date
+  ,s.effective_end_date
+  ,s.is_current
+  ,s.provider_id
   ,s.npi
   ,s.tin
-  ,s.lastName
-  ,s.firstName
-  ,s.middleName
-  ,s.phoneNumber
+  ,s.last_name
+  ,s.first_name
+  ,s.middle_name
+  ,s.phone_number
   ,s.address1
   ,s.address2
   ,s.city
   ,s.state
-  ,s.zipCode
-  ,s.practiceCode
-  ,s.practiceName
-  ,s.providerOrgCode
-  ,s.providerOrgName
-  ,s.providerSpecialtyDescription
-  ,s.taxonomyCode1
-  ,s.hpSpecialtyCode1
-  ,s.advProviderSpecialtyCode1
-  ,s.taxonomyCode2
-  ,s.hpSpecialtyCode2
-  ,s.advProviderSpecialtyCode2
-  ,s.taxonomyCode3
-  ,s.hpSpecialtyCode3
-  ,s.advProviderSpecialtyCode3
-  ,s.taxonomyCode4
-  ,s.hpSpecialtyCode4
-  ,s.advProviderSpecialtyCode4
-  ,s.taxonomyCode5
-  ,s.hpSpecialtyCode5
-  ,s.advProviderSpecialtyCode5
-  ,s.isPrescribePrivilege
-  ,s.providerDEA
-  ,s.payerID
-  ,s.isContracted
-  ,s.providerHAI
-  ,s.hospitalID
-  ,s.isExcludedFromProviderReporting
-  ,s.altProvReporting1
-  ,s.altProvReporting2
-  ,s.altProvReporting3
-  ,s.altProvReporting4
-  ,s.altProvReporting5
-  ,s.altProvReporting6
-  ,s.altProvReporting7
-  ,s.altProvReporting8
-  ,s.altProvReporting9
-  ,s.altProvReporting10
-  ,s.programType
-  ,s.practiceTargetedStatus
-  ,s.ProductID
-  ,s.ProviderType
-)
+  ,s.zip_code
+  ,s.practice_code
+  ,s.practice_name
+  ,s.provider_org_code
+  ,s.provider_org_name
+  ,s.provider_specialty_description
+  ,s.taxonomy_code_1
+  ,s.hp_specialty_code_1
+  ,s.adv_provider_specialty_code_1
+  ,s.taxonomy_code_2
+  ,s.hp_specialty_code_2
+  ,s.adv_provider_specialty_code_2
+  ,s.taxonomy_code_3
+  ,s.hp_specialty_code_3
+  ,s.adv_provider_specialty_code_3
+  ,s.taxonomy_code_4
+  ,s.hp_specialty_code_4
+  ,s.adv_provider_specialty_code_4
+  ,s.taxonomy_code_5
+  ,s.hp_specialty_code_5
+  ,s.adv_provider_specialty_code_5
+  ,s.is_prescribe_privilege
+  ,s.provider_dea
+  ,s.payer_id
+  ,s.is_contracted
+  ,s.provider_hai
+  ,s.hospital_id
+  ,s.is_excluded_from_provider_reporting
+  ,s.alt_prov_reporting_1
+  ,s.alt_prov_reporting_2
+  ,s.alt_prov_reporting_3
+  ,s.alt_prov_reporting_4
+  ,s.alt_prov_reporting_5
+  ,s.alt_prov_reporting_6
+  ,s.alt_prov_reporting_7
+  ,s.alt_prov_reporting_8
+  ,s.alt_prov_reporting_9
+  ,s.alt_prov_reporting_10
+  ,s.program_type
+  ,s.practice_targeted_status
+  ,s.product_id
+  ,s.provider_type
+);

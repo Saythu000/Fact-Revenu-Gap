@@ -182,18 +182,18 @@ def trigger_silver_notebooks(client_container_val: str):
 # COMMAND ----------
 
 def trigger_gold_notebooks(client_container_val: str):
-    """Triggers Gold layer notebooks using the generic subgroup processor."""
+    """Triggers Gold layer notebooks using the generic subgroup processor for dimProvider (FHIR R4 standard)."""
     gold_notebooks_base = f"{ROOT_DIR}/DimProvider/Gold/Notebooks"
     
     try:
-        # Load dimProvider (final merged dimension)
-        print("\n=== Triggering dimProvider (Gold Layer) ===")
+        # Load dimProvider (final merged SCD Type 2 dimension)
+        print("\n=== Triggering dimProvider (Gold Layer - FHIR R4 Standard) ===")
         dbutils.notebook.run(
             f"{gold_notebooks_base}/GenericSubGroupProcessing", 
             600, 
             {
                 "ClientContainer": client_container_val,
-                "SubGroupConfigPath": f"{ROOT_DIR}/DimProvider/Gold/Schema/dimProvider.json"
+                "SubGroupConfigPath": f"{ROOT_DIR}/dimProvider/Gold/Config/dimProvider.json"
             }
         )
         print("dimProvider Gold load completed successfully")
