@@ -6,7 +6,7 @@ SELECT
  ,ifnull(dimMember.memberKey, -99) as memberKey
  ,ifnull(dimMemberGroup.memberGroupKey, '-99') as memberGroupKey
  ,ifnull(mrg.planID, '') as planID
- ,ifnull(dimHCC.hccKey, -99) as hccKey
+ ,ifnull(dimHCC.hcc_key, -99) as hccKey
  ,ifnull(dimDate1.dateKey, -99) as snapshotDateKey
  ,ifnull(dimProvider.providerKey, -99) as planProviderKey
  ,ifnull(dimAlertGroup.alertGroupKey, -99) as alertGroupKey
@@ -26,10 +26,10 @@ left join dimMember
 left join dimMemberGroup
  on dimMember.subscriberID = dimMemberGroup.SubscriberID
 left join dimHCC
- on mrg.hccNumber = dimHCC.HCCNumber
- and substring(mrg.reportMonth, 1,4) = dimHCC.EffectiveYear
- and mrg.HCCVersion = dimHCC.HCCVersion
- and upper(dimHCC.HCCType) in ('COMM', 'ESRD', 'RX')
+ on mrg.hccNumber = dimHCC.hcc_code
+ and substring(mrg.reportMonth, 1,4) = dimHCC.effective_year
+ and mrg.HCCVersion = dimHCC.hcc_model_version
+ and upper(dimHCC.hcc_model_type) in ('COMM', 'ESRD', 'RX')
 left join dimProvider
  on mrg.providerID = dimProvider.providerID
  and CAST(dimProvider.isCurrent AS INT) = 1

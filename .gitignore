@@ -1,0 +1,13 @@
+# Data & Raw Downloads
+2027-initial-icd-10-cm-mappings/
+2027-initial-model-software/
+python-2027-initial-model-software/
+source/
+scratch/
+*.zip
+
+# Spark & Python
+.spark-warehouse/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

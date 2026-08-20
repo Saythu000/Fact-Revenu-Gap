@@ -1,5 +1,23 @@
 # Databricks notebook source
-# DBTITLE 1,Annual Full Production CMS HCC Data Ingestion (WAF Browser Downloader + Master 1.3MB CSV)
+# DBTITLE 1,Annual Full Production CMS HCC Data Ingestion & Seeding Engine (HL7 FHIR R4 Aligned)
+# =========================================================================================================
+# HEALTHCARE RISK ADJUSTMENT & HL7 FHIR R4 ARCHITECTURE DOCUMENTATION
+# ---------------------------------------------------------------------------------------------------------
+# This PySpark seeding script automates the annual ingestion, unpivoting, and seeding of official CMS
+# (Centers for Medicare & Medicaid Services) Risk Adjustment HCC (Hierarchical Condition Category) models.
+#
+# FHIR R4 DOMAIN ALIGNMENT:
+# 1. HL7 FHIR Condition Resource (https://www.hl7.org/fhir/R4/condition.html):
+#    - Condition.code.coding: Maps to ICD-10-CM diagnosis codes (e.g., E11.9 for Type 2 Diabetes)
+#    - Condition.category.coding: Maps to CMS HCC Categories (e.g., HCC 19 - Diabetes without Complication)
+#    - Condition.clinicalStatus: Maps to `is_chronic_condition` (active/chronic condition tracking)
+#
+# 2. HL7 FHIR RiskAssessment Resource (https://www.hl7.org/fhir/R4/riskassessment.html):
+#    - RiskAssessment.basis: CMS Risk Adjustment Model Version (V24, V28, V21, V22, V08)
+#    - RiskAssessment.method: Model Type / Population Type (COMM = Community, ESRD = End-Stage Renal Disease, RX = Part D)
+#    - RiskAssessment.occurrencePeriod: Validity window (`effective_start_date` to `effective_end_date`)
+# =========================================================================================================
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, concat_ws, hash, lit, expr
 import os, urllib.request, zipfile
@@ -9,7 +27,9 @@ spark = SparkSession.builder \
     .appName("AnnualSeedCMSHCCData") \
     .getOrCreate()
 
-# 1. Resolve Workspace root path dynamically
+# ---------------------------------------------------------------------------------------------------------
+# Step 1: Resolve Workspace Root Path Dynamically
+# ---------------------------------------------------------------------------------------------------------
 current_dir = os.getcwd()
 if os.path.basename(current_dir).lower() in ["seeding", "dimhcc"]:
     project_root = os.path.abspath(os.path.join(current_dir, ".."))
@@ -24,7 +44,9 @@ os.makedirs(hcc_source_dir, exist_ok=True)
 print(f"Project Root: {project_root}")
 print(f"HCC Source Directory: {hcc_source_dir}")
 
-# 2. MODULE 1: Full Browser Simulation Web Downloader (WAF Bypass)
+# ---------------------------------------------------------------------------------------------------------
+# Step 2: Download CMS Official Model Mappings (WAF Browser Simulation)
+# ---------------------------------------------------------------------------------------------------------
 cms_url = "https://www.cms.gov/files/zip/2027-initial-icd-10-cm-mappings.zip"
 zip_target = os.path.join(hcc_source_dir, "cms_2027_mappings.zip")
 
@@ -38,7 +60,7 @@ browser_headers = {
     'Sec-Fetch-Site': 'same-origin'
 }
 
-print(f"=== Module 1: Connecting to CMS.gov with Full Browser Simulation ===")
+print(f"=== Connecting to CMS.gov with Full Browser Simulation ===")
 try:
     req = urllib.request.Request(cms_url, headers=browser_headers)
     with urllib.request.urlopen(req, timeout=30) as response, open(zip_target, 'wb') as out_file:
@@ -50,11 +72,12 @@ try:
 except Exception as e:
     print(f"CMS Web Downloader Notice (WAF Block/404): {str(e)}")
 
-# 3. MODULE 2: Locate Master CMS Mapping CSV File (1.3MB file containing all 11,918 lines)
+# ---------------------------------------------------------------------------------------------------------
+# Step 3: Locate Master CMS Mapping CSV File (11,918+ ICD-10 to HCC Mappings)
+# ---------------------------------------------------------------------------------------------------------
 master_csv_path = os.path.join(project_root, "2027-initial-icd-10-cm-mappings", "2027 Initial ICD-10-CM Mappings.csv")
 
 if not os.path.exists(master_csv_path):
-    # Scan source/HCC/ or workspace for extracted Master CSV file
     for root, dirs, files in os.walk(project_root):
         for f in files:
             if f.endswith(".csv") and ("2027 Initial ICD-10-CM Mappings" in f or "ICD-10-CM Mappings" in f):
@@ -63,14 +86,11 @@ if not os.path.exists(master_csv_path):
 
 print(f"Loading Master CMS Mapping CSV File: {master_csv_path}")
 
-# 4. Read Master CSV File with Pandas (skipping header metadata lines)
-# Lines 1-3 in CMS file are title/metadata header; row 4 contains column names
+# Read Master CSV with Pandas (skip title lines 1-3)
 pdf_raw = pd.read_csv(master_csv_path, skiprows=3, dtype=str)
-
-# Clean Column Names (removing linebreaks)
 pdf_raw.columns = [c.replace("\n", " ").strip() for c in pdf_raw.columns]
 
-# Rename primary columns for clarity
+# Rename raw CSV columns to standardized staging names
 pdf_raw = pdf_raw.rename(columns={
     pdf_raw.columns[0]: "ICD10",
     pdf_raw.columns[1]: "Description",
@@ -83,62 +103,94 @@ pdf_raw = pdf_raw.rename(columns={
 
 df_master = spark.createDataFrame(pdf_raw)
 
+# ---------------------------------------------------------------------------------------------------------
+# Step 4: Define Transformation Function to Unpivot Model Versions to FHIR R4 Standard
+# ---------------------------------------------------------------------------------------------------------
 def build_version_df(df, cc_col, version_name, type_name):
+    """
+    Unpivots individual CMS model version columns into standardized FHIR R4 attribute records.
+    - cc_col: Raw CSV column name (e.g. V28_COMM)
+    - version_name: CMS Model Version string (V24, V28, V21, V22, V08)
+    - type_name: Risk Model Type (COMM = Community, ESRD = End Stage Renal, RX = Part D)
+    """
     return df.filter(col(cc_col).isNotNull() & (col(cc_col) != "") & (col(cc_col) != "--")) \
-        .withColumn("icd", col("ICD10")) \
-        .withColumn("hccNumber", col(cc_col).cast("float").cast("int").cast("string")) \
-        .withColumn("hccVersion", lit(version_name)) \
-        .withColumn("hccType", lit(type_name)) \
-        .withColumn("icdCodeType", lit("10")) \
-        .withColumn("icdEffectiveYear", lit(2026)) \
-        .withColumn("hccEffectiveYear", lit(2026)) \
-        .withColumn("isPrimary", lit(True)) \
-        .withColumn("effectiveStartDate", expr("to_date('2026-01-01')")) \
-        .withColumn("effectiveEndDate", expr("to_date('2026-12-31')"))
+        .withColumn("condition_code", col("ICD10")) \
+        .withColumn("hcc_code", col(cc_col).cast("float").cast("int").cast("string")) \
+        .withColumn("hcc_model_version", lit(version_name)) \
+        .withColumn("hcc_model_type", lit(type_name)) \
+        .withColumn("condition_code_type", lit("10")) \
+        .withColumn("condition_effective_year", lit(2026)) \
+        .withColumn("hcc_effective_year", lit(2026)) \
+        .withColumn("is_primary_diagnosis", lit(True)) \
+        .withColumn("effective_start_date", expr("to_date('2026-01-01')")) \
+        .withColumn("effective_end_date", expr("to_date('2026-12-31')"))
 
-# 5. Unpivot All 5 Model Versions
+# ---------------------------------------------------------------------------------------------------------
+# Step 5: Unpivot All 5 CMS Model Versions (V21 ESRD, V24 ESRD, V22 COMM, V28 COMM, V08 RX)
+# ---------------------------------------------------------------------------------------------------------
 df_v21 = build_version_df(df_master, "V21_ESRD", "V21", "ESRD")
 df_v24 = build_version_df(df_master, "V24_ESRD", "V24", "ESRD")
 df_v22 = build_version_df(df_master, "V22_COMM", "V22", "COMM")
 df_v28 = build_version_df(df_master, "V28_COMM", "V28", "COMM")
 df_v08 = build_version_df(df_master, "V08_RX", "V08", "RX")
 
-# 6. Union All 5 CMS Model Versions for Full Bridge Table (gold_icdhccxref)
-cols_xref = ["icd", "icdCodeType", "icdEffectiveYear", "hccNumber", "hccVersion", "hccType", "hccEffectiveYear", "isPrimary", "effectiveStartDate", "effectiveEndDate"]
+# ---------------------------------------------------------------------------------------------------------
+# Step 6: Union All 5 CMS Models into Crosswalk Bridge Table (gold_icdhccxref)
+# ---------------------------------------------------------------------------------------------------------
+cols_xref = [
+    "condition_code", 
+    "condition_code_type", 
+    "condition_effective_year", 
+    "hcc_code", 
+    "hcc_model_version", 
+    "hcc_model_type", 
+    "hcc_effective_year", 
+    "is_primary_diagnosis", 
+    "effective_start_date", 
+    "effective_end_date"
+]
+
 df_xref = df_v21.select(*cols_xref) \
     .union(df_v24.select(*cols_xref)) \
     .union(df_v22.select(*cols_xref)) \
     .union(df_v28.select(*cols_xref)) \
     .union(df_v08.select(*cols_xref))
 
+# Generate surrogate hash key `icd_hcc_key` for unique crosswalk lookup
 df_xref_final = df_xref.withColumn(
-    "icdHCCKey", 
-    hash(concat_ws("|", col("icd"), col("icdCodeType"), col("hccNumber"), col("hccVersion"), col("hccType"), col("hccEffectiveYear")))
+    "icd_hcc_key", 
+    hash(concat_ws("|", col("condition_code"), col("condition_code_type"), col("hcc_code"), col("hcc_model_version"), col("hcc_model_type"), col("hcc_effective_year")))
 )
 
-# 7. Extract Unique Categories for Dimension Table (gold_dimhcc)
-df_dim_hcc = df_xref.select("hccNumber", "hccVersion", "hccType", "hccEffectiveYear", "effectiveStartDate", "effectiveEndDate") \
+# ---------------------------------------------------------------------------------------------------------
+# Step 7: Extract Unique HCC Categories for Master Dimension Table (gold_dimhcc)
+# ---------------------------------------------------------------------------------------------------------
+df_dim_hcc = df_xref.select(
+    col("hcc_code"), 
+    col("hcc_model_version"), 
+    col("hcc_model_type"), 
+    col("hcc_effective_year").alias("effective_year"), 
+    col("effective_start_date"), 
+    col("effective_end_date")
+) \
     .distinct() \
-    .withColumn("HCCDescription", concat_ws(" ", lit("Hierarchical Condition Category"), col("hccNumber"))) \
-    .withColumn("IsChronic", lit(True)) \
-    .withColumnRenamed("hccEffectiveYear", "EffectiveYear") \
-    .withColumnRenamed("effectiveStartDate", "EffectiveDateStart") \
-    .withColumnRenamed("effectiveEndDate", "EffectiveDateEnd") \
-    .withColumnRenamed("hccNumber", "HCCNumber") \
-    .withColumnRenamed("hccVersion", "HCCVersion") \
-    .withColumnRenamed("hccType", "HCCType") \
+    .withColumn("hcc_description", concat_ws(" ", lit("Hierarchical Condition Category"), col("hcc_code"))) \
+    .withColumn("is_chronic_condition", lit(True)) \
     .withColumn(
-        "hccKey",
-        hash(concat_ws("|", col("HCCNumber"), col("HCCVersion"), col("HCCType"), col("EffectiveYear")))
+        "hcc_key",
+        hash(concat_ws("|", col("hcc_code"), col("hcc_model_version"), col("hcc_model_type"), col("effective_year")))
     ) \
-    .withColumn("hashKey", col("hccKey"))
+    .withColumn("hash_key", col("hcc_key"))
 
-# Save to Delta Tables in claimsprocessing catalog
+# ---------------------------------------------------------------------------------------------------------
+# Step 8: Persist to Delta Lake Tables in claimsprocessing Catalog
+# ---------------------------------------------------------------------------------------------------------
 spark.sql("CREATE DATABASE IF NOT EXISTS claimsprocessing.gold")
+
 df_xref_final.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable("claimsprocessing.gold.gold_icdhccxref")
 df_dim_hcc.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable("claimsprocessing.gold.gold_dimhcc")
 
-# Print Final Production Counts per Version
+# Print Execution Verification Summary
 count_xref = spark.table("claimsprocessing.gold.gold_icdhccxref").count()
 count_hcc = spark.table("claimsprocessing.gold.gold_dimhcc").count()
 
@@ -147,4 +199,5 @@ print(f"Successfully executed Full Master Production CMS Seeding!")
 print(f"Total Crosswalk Mappings (gold_icdhccxref): {count_xref}")
 print(f"Total Unique HCC Categories (gold_dimhcc): {count_hcc}")
 print(f"============================================================")
+
 
